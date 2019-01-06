@@ -1,9 +1,12 @@
 #include "cellboard.h"
 #include <QBrush>
+#include "battleshipgame.h"
 
 /*posto sam definisao kvadrat da bude duzine 20, mora da bude veci razmak od toga posto se racuna
 gornjeg levog coska kvadrata */
-#define SPACE 25
+#define SPACE 23
+
+extern BattleshipGame* game;
 
 
 cellBoard::cellBoard()
@@ -24,14 +27,17 @@ void cellBoard::placeBoard(int x,int y,int cols,int rows){
 
 
 void cellBoard::createColumn(int x,int y,int numOfrows,int curr_i){
-    //x i y ce sluziti za gui poziciju na sceni
+
     for(int i=0;i<numOfrows;i++){
         Cell* cell = new Cell();
+        cell->setPos(x,y+SPACE*i);
+
         cell->setIsPlaced(true);
         cell->setCoords(i,curr_i);
 
         cells.append(cell);
 
-       //TODO dodati na scenu
+        game->scene->addItem(cell);
+
     }
 }

@@ -27,14 +27,14 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-    player.cpp \
     cell.cpp \
-    cellboard.cpp
+    cellboard.cpp \
+    battleshipgame.cpp
 
 HEADERS += \
     cell.h \
-    player.h \
-    cellboard.h
+    cellboard.h \
+    battleshipgame.h
 
 FORMS +=
 
