@@ -18,6 +18,10 @@ public:
     bool operator==(const User &rhs) const;
 
     bool operator!=(const User &rhs) const;
+
+    const std::string &getName() const;
+
+    const std::string &getSecret() const;
 };
 
 

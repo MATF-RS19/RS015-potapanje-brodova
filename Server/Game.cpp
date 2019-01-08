@@ -4,9 +4,10 @@
 
 #include <iostream>
 #include "Game.h"
+#include "Helper.h"
 
-Game::Game(User &creator) : creator(creator), challenger(creator) {
-    id = "test"; // TODO random string
+Game::Game(User *creator) : creator(creator), challenger(creator) {
+    id = Helper::getRandomString(10);
 
     for (int i = 0; i < BOARD_SIZE; i++) {
         board[i].fill(EMPTY);
@@ -17,11 +18,18 @@ Game::Game(User &creator) : creator(creator), challenger(creator) {
     board[1][4] = DESTROYED;
 }
 
-bool Game::playTurn(User auth, int x, int y) {
-    if (auth != creator) return false; // consider moving auth check to GameManager
+bool Game::playTurn(User *auth, int x, int y) {
+    if (*auth != *creator) return false; // consider moving auth check to GameManager
     if (board[x][y] == TARGETED || board[x][y] == DESTROYED) return false;
     if (board[x][y] == EMPTY) board[x][y] = TARGETED;
     if (board[x][y] == PLACED) board[x][y] = DESTROYED;
+    // TODO check if game finished
+    return true;
+}
+
+bool Game::setChallenger(User *_challenger) {
+    challenger = _challenger;
+    state = PLAYING;
     return true;
 }
 
@@ -52,11 +60,11 @@ const std::string &Game::getId() const {
     return id;
 }
 
-User &Game::getCreator() const {
+User *Game::getCreator() const {
     return creator;
 }
 
-User &Game::getChallenger() const {
+User *Game::getChallenger() const {
     return challenger;
 }
 
