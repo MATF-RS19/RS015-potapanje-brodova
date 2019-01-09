@@ -34,6 +34,7 @@ int Cell::getY(){
 void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
     if(game->player1->isHit(this->getX(),this->getY())){
         std::cout<< "Pogodak" << std::endl;
-    }
+        }
+
 }
 

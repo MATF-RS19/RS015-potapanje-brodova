@@ -18,7 +18,7 @@ QString Player::getName(){
 }
 
 bool Player::isHit(int x,int y){
-    if(board[x][y] != 0){
+    if(board[x][y] == 1){
         board[x][y]=3;
         return true;
     }
