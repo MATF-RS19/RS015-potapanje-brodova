@@ -1,4 +1,6 @@
 #include "battleshipgame.h"
+#include <stdlib.h>
+#include <time.h>
 
 BattleshipGame::BattleshipGame(QWidget *parent)
 {
@@ -19,5 +21,17 @@ void BattleshipGame::start(){
     cellBoard2= new cellBoard();
     cellBoard1->placeBoard(100,350,10,10);
     cellBoard2->placeBoard(400,350,10,10);
+    Player* player1 = new Player();
+    srand(time(NULL));
+    int random1 = rand() % 10;
+    int random2 = rand() % 10;
 
+    std::cout << "started, " << random1 <<" " <<  random2<< std::endl;
+
+    player1->board[random1][random2] = 1;
+
+}
+
+void BattleshipGame::setWhoseTurn(QString whoseTurn){
+    this->whoseTurn=whoseTurn;
 }

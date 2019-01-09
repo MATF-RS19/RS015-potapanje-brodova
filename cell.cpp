@@ -1,9 +1,11 @@
 #include "cell.h"
 #include <QVector>
 #include <QPointF>
+#include "battleshipgame.h"
 
+extern BattleshipGame* game;
 
-Cell::Cell(){
+Cell::Cell(QGraphicsItem* parent){
     QRect c=QRect(QPoint(0,0),QPoint(20,20));
     QRectF cell(c);
 
@@ -16,16 +18,22 @@ void Cell::setIsPlaced(bool b)
     this->isPlaced=b;
 }
 void Cell::setCoords(int x,int y){
-    x_cord = x;
-    y_cord = y;
+    this->x_coord = x;
+    this->y_coord = y;
 }
 bool Cell::getIsPlaced(){
     return isPlaced;
 }
-bool Cell::getX(){
-    return x_cord;
+int Cell::getX(){
+    return x_coord;
 }
-bool Cell::getY(){
-    return y_cord;
+int Cell::getY(){
+    return y_coord;
+}
+
+void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
+    if(game->player1->isHit(this->getX(),this->getY())){
+        std::cout<< "Pogodak" << std::endl;
+    }
 }
 

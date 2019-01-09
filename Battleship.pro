@@ -29,12 +29,14 @@ SOURCES += \
         main.cpp \
     cell.cpp \
     cellboard.cpp \
-    battleshipgame.cpp
+    battleshipgame.cpp \
+    player.cpp
 
 HEADERS += \
     cell.h \
     cellboard.h \
-    battleshipgame.h
+    battleshipgame.h \
+    player.h
 
 FORMS +=
 

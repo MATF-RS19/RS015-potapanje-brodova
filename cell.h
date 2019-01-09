@@ -3,24 +3,25 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneMouseEvent>
 
-using namespace std;
-
 class Cell : public QGraphicsRectItem
 {
 
 
 private:
     bool isPlaced;
-    int x_cord;
-    int y_cord;
+    int x_coord;
+    int y_coord;
+
 public:
-    Cell();
+    Cell(QGraphicsItem* parent = NULL);
     bool getIsPlaced();
-    bool getX();
-    bool getY();
+    int getX();
+    int getY();
 
     void setIsPlaced(bool b);
     void setCoords(int x,int y);
+
+    void mousePressEvent(QGraphicsSceneMouseEvent* event);
 };
 
 #endif // CELL_H
