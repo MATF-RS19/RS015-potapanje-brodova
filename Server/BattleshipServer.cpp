@@ -40,6 +40,12 @@ string BattleshipServer::getGameState(string username, string secret, string gam
     return gameManager.getGameState(username, secret, gameId);
 }
 
+string BattleshipServer::playTurn(string username, string secret, string gameId, string x, string y) {
+    if (!gameManager.playTurn(username, secret, gameId, stoi(x), stoi(y)))
+        throw "Error";
+    return "OK";
+}
+
 void BattleshipServer::handleRequest(http_request request) {
     string path = request.request_uri().path();
     cout << path << endl;
@@ -70,6 +76,14 @@ void BattleshipServer::handleRequest(http_request request) {
             string secret = params.find("secret")->second;
             string gameId = params.find("gameid")->second;
             request.reply(status_codes::OK, getGameState(username, secret, gameId));
+        } else if (path == "/play") {
+            // TODO check if params exist
+            string username = params.find("username")->second;
+            string secret = params.find("secret")->second;
+            string gameId = params.find("gameid")->second;
+            string x = params.find("x")->second;
+            string y = params.find("y")->second;
+            request.reply(status_codes::OK, playTurn(username, secret, gameId, x, y));
         } else if (path == "/games") {
             request.reply(status_codes::OK, getOpenGames());
         } else {

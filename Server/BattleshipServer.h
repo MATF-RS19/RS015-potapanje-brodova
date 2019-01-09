@@ -23,6 +23,7 @@ public:
     string joinGame(string username, string secret, string gameId, string ships);
     string getOpenGames();
     string getGameState(string username, string secret, string gameId);
+    string playTurn(string username, string secret, string gameId, string x, string y);
 
     virtual ~BattleshipServer();
 

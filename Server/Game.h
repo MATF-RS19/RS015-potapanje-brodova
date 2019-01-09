@@ -19,7 +19,8 @@ using namespace std;
 enum game_state {
     OPEN,
     PLAYING,
-    FINISHED
+    CREATOR_WON,
+    CHALLENGER_WON,
 };
 enum game_turn {
     CREATOR,
@@ -48,6 +49,7 @@ public:
     std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getCreatorBoard() const;
     std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getChallengerBoard() const;
     bool setChallenger(User *challenger, vector<int>);
+    void checkState();
 
     static std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> cleanOpponentBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE>);
     static string printBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> board);

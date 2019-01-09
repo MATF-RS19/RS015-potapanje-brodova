@@ -24,20 +24,51 @@ Game::Game(User *creator, vector<int> coords) : creator(creator), challenger(cre
 }
 
 bool Game::playTurn(User *auth, int x, int y) {
-    // TODO check game state
+    if (state != PLAYING)
+        return false;
     if (*auth == *creator) {
+        if (turn != CREATOR) return false;
         if (creatorBoard[x][y] == TARGETED || creatorBoard[x][y] == DESTROYED) return false;
         if (creatorBoard[x][y] == EMPTY) creatorBoard[x][y] = TARGETED;
-        if (creatorBoard[x][y] == PLACED) creatorBoard[x][y] = DESTROYED;
+        if (creatorBoard[x][y] == PLACED) {
+            creatorBoard[x][y] = DESTROYED;
+            checkState();
+        }
+        turn = CHALLENGER;
         return true;
     } else if (*auth == *challenger) {
+        if (turn != CHALLENGER) return false;
         if (challengerBoard[x][y] == TARGETED || challengerBoard[x][y] == DESTROYED) return false;
         if (challengerBoard[x][y] == EMPTY) challengerBoard[x][y] = TARGETED;
-        if (challengerBoard[x][y] == PLACED) challengerBoard[x][y] = DESTROYED;
+        if (challengerBoard[x][y] == PLACED) {
+            challengerBoard[x][y] = DESTROYED;
+            checkState();
+        }
+        turn = CREATOR;
         return true;
     }
-    // TODO check if game finished
     return false;
+}
+
+void Game::checkState() {
+    int destroyed = 0;
+    for (auto row : creatorBoard)
+        for (auto cell : row)
+            if (cell == DESTROYED)
+                destroyed++;
+    if (destroyed == NUMBER_OF_SHIPS) {
+        state = CHALLENGER_WON;
+        return;
+    }
+    destroyed = 0;
+    for (auto row : challengerBoard)
+        for (auto cell : row)
+            if (cell == DESTROYED)
+                destroyed++;
+    if (destroyed == NUMBER_OF_SHIPS) {
+        state = CREATOR_WON;
+        return;
+    }
 }
 
 bool Game::setChallenger(User *_challenger, vector<int> coords) {

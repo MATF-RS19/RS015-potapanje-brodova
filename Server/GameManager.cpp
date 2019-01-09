@@ -97,19 +97,23 @@ string GameManager::getGameState(string username, string secret, std::string gam
         throw "Not authorized to see game";
 
     string response;
-    if (*user != *(game->getCreator())) {
+    if (*user == *(game->getCreator())) {
         response += Game::printBoard(game->getCreatorBoard());
         response += "\n";
         response += Game::printBoard(Game::cleanOpponentBoard(game->getChallengerBoard()));
+        response += "\n";
+        response += ((game->getTurn() == CREATOR) ? "Your turn" : "Waiting turn");
     } else {
         response += Game::printBoard(game->getChallengerBoard());
         response += "\n";
         response += Game::printBoard(Game::cleanOpponentBoard(game->getCreatorBoard()));
+        response += "\n";
+        response += ((game->getTurn() == CHALLENGER) ? "Your turn" : "Waiting turn");
     }
 
     response += "\n";
-    response += "Game state: " + to_string(game->getState()) + "\n";
-    response += "Game turn: " + to_string(game->getTurn()) + "\n";
+    response += "Game state: ";
+    response += game->getState() == PLAYING ? "Game ongoing" : "Game finished";
 
     return response;
 }
@@ -126,4 +130,12 @@ bool GameManager::joinGame(string username, string secret, string gameId, string
     Game *game = getGameById(gameId);
     auto coords = Helper::parseShipCoords(ships);
     return game->setChallenger(getUserByName(username), coords);
+}
+
+bool GameManager::playTurn(string username, string secret, string gameId, int turn_x, int turn_y) {
+    if (!checkAuth(username, secret))
+        throw "Auth error";
+    Game *game = getGameById(gameId);
+    User *user = getUserByName(username);
+    return game->playTurn(user, turn_x, turn_y);
 }
