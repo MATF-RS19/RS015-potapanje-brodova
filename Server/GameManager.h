@@ -21,10 +21,10 @@ public:
     vector<Game> games;
 
     string registerUser(string name);
-    string createGame(User *creator);
+    string createGame(string username, string secret);
 
     vector<Game> getOpenGames() const;
-    bool joinGame(User *auth, string gameId);
+    bool joinGame(string username, string secret, string gameId);
 //    bool playTurn(User auth, string gameId, int turn_x, int turn_y);
     array<array<array<cell, BOARD_SIZE>, BOARD_SIZE>, 2> getGameState(User auth, string gameId) const;
     const Game *getGameById(string) const;
@@ -34,7 +34,7 @@ public:
     friend ostream &operator<<(ostream &os, const GameManager &manager);
     const vector<Game> &getGames() const;
     bool checkAuth(string username, string secret);
-    bool checkAuth(User &auth);
+    bool checkAuth(User *auth);
 };
 
 

@@ -16,9 +16,11 @@ string GameManager::registerUser(std::string name) {
     return user.getSecret();
 }
 
-string GameManager::createGame(User *creator) {
+string GameManager::createGame(string username, string secret) {
+    if (!checkAuth(username, secret))
+        throw "auth error";
     // TODO should prevent user from creating multiple games?
-    auto game = Game(creator);
+    auto game = Game(getUserByName(username));
     games.emplace_back(game);
     return game.getId();
 }
@@ -86,8 +88,8 @@ std::ostream &operator<<(std::ostream &os, const GameManager &manager) {
     return os;
 }
 
-bool GameManager::checkAuth(User &auth) {
-    return checkAuth(auth.getName(), auth.getSecret());
+bool GameManager::checkAuth(User *auth) {
+    return checkAuth(auth->getName(), auth->getSecret());
 }
 
 bool GameManager::checkAuth(string username, string secret) {
@@ -97,7 +99,9 @@ bool GameManager::checkAuth(string username, string secret) {
     return user->getName() == username && user->getSecret() == secret;
 }
 
-bool GameManager::joinGame(User *challenger, string gameId) {
+bool GameManager::joinGame(string username, string secret, string gameId) {
+    if (!checkAuth(username, secret))
+        throw "auth error";
     Game *game = getGameById(gameId);
-    return game->setChallenger(challenger);
+    return game->setChallenger(getUserByName(username));
 }
