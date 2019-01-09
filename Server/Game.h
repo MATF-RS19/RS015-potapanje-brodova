@@ -6,11 +6,15 @@
 #define SERVER_GAME_H
 
 #define BOARD_SIZE 8
+#define NUMBER_OF_SHIPS 8
 
 #include <string>
 #include <array>
+#include <vector>
 
 #include "User.h"
+
+using namespace std;
 
 enum game_state {
     OPEN,
@@ -36,15 +40,17 @@ private:
 
     game_state state = OPEN;
     game_turn turn = CHALLENGER;
-    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> board;
+    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> creatorBoard;
+    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> challengerBoard;
 public:
-    Game(User *creator);
+    Game(User *creator, vector<int>);
     bool playTurn(User *auth, int x, int y);
-    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getBoard() const;
-    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getOpponentBoard() const;
-    bool setChallenger(User *challenger);
+    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getCreatorBoard() const;
+    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getChallengerBoard() const;
+    bool setChallenger(User *challenger, vector<int>);
 
-    static void printBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> board);
+    static std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> cleanOpponentBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE>);
+    static string printBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> board);
 
     const std::string &getId() const;
     User *getCreator() const;

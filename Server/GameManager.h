@@ -21,19 +21,19 @@ public:
     vector<Game> games;
 
     string registerUser(string name);
-    string createGame(string username, string secret);
+    string createGame(string username, string secret, string ships);
 
     vector<Game> getOpenGames() const;
-    bool joinGame(string username, string secret, string gameId);
+    bool joinGame(string username, string secret, string gameId, string ships);
 //    bool playTurn(User auth, string gameId, int turn_x, int turn_y);
-    array<array<array<cell, BOARD_SIZE>, BOARD_SIZE>, 2> getGameState(User auth, string gameId) const;
+    string getGameState(string username, string secret, string gameId) const;
     const Game *getGameById(string) const;
     Game *getGameById(string);
     const User *getUserByName(std::string name) const;
     User *getUserByName(std::string name);
     friend ostream &operator<<(ostream &os, const GameManager &manager);
     const vector<Game> &getGames() const;
-    bool checkAuth(string username, string secret);
+    bool checkAuth(string username, string secret) const;
     bool checkAuth(User *auth);
 };
 

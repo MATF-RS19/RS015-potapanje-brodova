@@ -27,13 +27,17 @@ string BattleshipServer::registerUser(string username) {
     return gameManager.registerUser(username);
 }
 
-string BattleshipServer::createGame(string username, string secret) {
-    return gameManager.createGame(username, secret);
+string BattleshipServer::createGame(string username, string secret, string ships) {
+    return gameManager.createGame(username, secret, ships);
 }
 
-string BattleshipServer::joinGame(string username, string secret, string gameId) {
-    gameManager.joinGame(username, secret, gameId);
+string BattleshipServer::joinGame(string username, string secret, string gameId, string ships) {
+    gameManager.joinGame(username, secret, gameId, ships);
     return "OK";
+}
+
+string BattleshipServer::getGameState(string username, string secret, string gameId) {
+    return gameManager.getGameState(username, secret, gameId);
 }
 
 void BattleshipServer::handleRequest(http_request request) {
@@ -51,13 +55,21 @@ void BattleshipServer::handleRequest(http_request request) {
             // TODO check if params exist
             string username = params.find("username")->second;
             string secret = params.find("secret")->second;
-            request.reply(status_codes::OK, createGame(username, secret));
+            string ships = params.find("ships")->second;
+            request.reply(status_codes::OK, createGame(username, secret, ships));
         } else if (path == "/join") {
             // TODO check if params exist
             string username = params.find("username")->second;
             string secret = params.find("secret")->second;
             string gameId = params.find("gameid")->second;
-            request.reply(status_codes::OK, joinGame(username, secret, gameId));
+            string ships = params.find("ships")->second;
+            request.reply(status_codes::OK, joinGame(username, secret, gameId, ships));
+        } else if (path == "/game") {
+            // TODO check if params exist
+            string username = params.find("username")->second;
+            string secret = params.find("secret")->second;
+            string gameId = params.find("gameid")->second;
+            request.reply(status_codes::OK, getGameState(username, secret, gameId));
         } else if (path == "/games") {
             request.reply(status_codes::OK, getOpenGames());
         } else {

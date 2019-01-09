@@ -6,12 +6,14 @@
 #define SERVER_HELPER_H
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
 class Helper {
 public:
     static string getRandomString(int length);
+    static vector<int> parseShipCoords(string ships);
 };
 
 

@@ -3,8 +3,22 @@
 //
 
 #include "GameManager.h"
+#include "Helper.h"
 
 #include <iostream>
+#include <string>
+#include <sstream>
+
+bool GameManager::checkAuth(User *auth) {
+    return checkAuth(auth->getName(), auth->getSecret());
+}
+
+bool GameManager::checkAuth(string username, string secret) const {
+    auto user = find_if(users.begin(), users.end(),
+                        [username](const User &user) { return user.getName() == username; });
+    if (user == users.end()) return false;
+    return user->getName() == username && user->getSecret() == secret;
+}
 
 string GameManager::registerUser(std::string name) {
     if (std::find_if(users.begin(), users.end(), [name](const User &user) {
@@ -16,11 +30,12 @@ string GameManager::registerUser(std::string name) {
     return user.getSecret();
 }
 
-string GameManager::createGame(string username, string secret) {
+string GameManager::createGame(string username, string secret, string ships) {
+    auto coords = Helper::parseShipCoords(ships);
     if (!checkAuth(username, secret))
-        throw "auth error";
+        throw "Auth error";
     // TODO should prevent user from creating multiple games?
-    auto game = Game(getUserByName(username));
+    auto game = Game(getUserByName(username), coords);
     games.emplace_back(game);
     return game.getId();
 }
@@ -73,13 +88,30 @@ User *GameManager::getUserByName(std::string name) {
     return &*user;
 }
 
-std::array<std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE>, 2>
-GameManager::getGameState(User auth, std::string gameId) const {
-    const Game *game = getGameById(gameId);
-    if (auth != *(game->getCreator()) && auth != *(game->getChallenger()))
+string GameManager::getGameState(string username, string secret, std::string gameId) const {
+    if (!checkAuth(username, secret))
         throw "Auth error";
-    return std::array<std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE>, 2> {game->getBoard(),
-                                                                                game->getOpponentBoard()};
+    const Game *game = getGameById(gameId);
+    const User *user = getUserByName(username);
+    if (*user != *(game->getCreator()) && *user != *(game->getChallenger()))
+        throw "Not authorized to see game";
+
+    string response;
+    if (*user != *(game->getCreator())) {
+        response += Game::printBoard(game->getCreatorBoard());
+        response += "\n";
+        response += Game::printBoard(Game::cleanOpponentBoard(game->getChallengerBoard()));
+    } else {
+        response += Game::printBoard(game->getChallengerBoard());
+        response += "\n";
+        response += Game::printBoard(Game::cleanOpponentBoard(game->getCreatorBoard()));
+    }
+
+    response += "\n";
+    response += "Game state: " + to_string(game->getState()) + "\n";
+    response += "Game turn: " + to_string(game->getTurn()) + "\n";
+
+    return response;
 }
 
 std::ostream &operator<<(std::ostream &os, const GameManager &manager) {
@@ -88,20 +120,10 @@ std::ostream &operator<<(std::ostream &os, const GameManager &manager) {
     return os;
 }
 
-bool GameManager::checkAuth(User *auth) {
-    return checkAuth(auth->getName(), auth->getSecret());
-}
-
-bool GameManager::checkAuth(string username, string secret) {
-    auto user = find_if(users.begin(), users.end(),
-                        [username](const User &user) { return user.getName() == username; });
-    if (user == users.end()) return false;
-    return user->getName() == username && user->getSecret() == secret;
-}
-
-bool GameManager::joinGame(string username, string secret, string gameId) {
+bool GameManager::joinGame(string username, string secret, string gameId, string ships) {
     if (!checkAuth(username, secret))
-        throw "auth error";
+        throw "Auth error";
     Game *game = getGameById(gameId);
-    return game->setChallenger(getUserByName(username));
+    auto coords = Helper::parseShipCoords(ships);
+    return game->setChallenger(getUserByName(username), coords);
 }

@@ -5,6 +5,8 @@
 #include "Helper.h"
 
 #include <random>
+#include <string>
+#include <sstream>
 
 string Helper::getRandomString(int length) {
     string s = "";
@@ -17,4 +19,17 @@ string Helper::getRandomString(int length) {
         s += letters[rand];
     }
     return s;
+}
+
+vector<int> Helper::parseShipCoords(string ships) {
+    stringstream stream(ships);
+    string segment;
+    vector<int> coords;
+
+    while(std::getline(stream, segment, ','))
+    {
+        coords.emplace_back(stoi(segment));
+    }
+
+    return coords;
 }

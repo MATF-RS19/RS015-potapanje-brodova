@@ -6,53 +6,81 @@
 #include "Game.h"
 #include "Helper.h"
 
-Game::Game(User *creator) : creator(creator), challenger(creator) {
+using namespace std;
+
+Game::Game(User *creator, vector<int> coords) : creator(creator), challenger(creator) {
+    if (coords.size() != 2 * NUMBER_OF_SHIPS)
+        throw "8 ship coordinates required";
+
     id = Helper::getRandomString(10);
 
     for (int i = 0; i < BOARD_SIZE; i++) {
-        board[i].fill(EMPTY);
+        creatorBoard[i].fill(EMPTY);
     }
 
-    board[1][2] = PLACED;
-    board[1][3] = TARGETED;
-    board[1][4] = DESTROYED;
+    for (int i = 0; i < NUMBER_OF_SHIPS; i++) {
+        creatorBoard[coords[i * 2]][coords[i * 2 + 1]] = PLACED;
+    }
 }
 
 bool Game::playTurn(User *auth, int x, int y) {
-    if (*auth != *creator) return false; // consider moving auth check to GameManager
-    if (board[x][y] == TARGETED || board[x][y] == DESTROYED) return false;
-    if (board[x][y] == EMPTY) board[x][y] = TARGETED;
-    if (board[x][y] == PLACED) board[x][y] = DESTROYED;
+    // TODO check game state
+    if (*auth == *creator) {
+        if (creatorBoard[x][y] == TARGETED || creatorBoard[x][y] == DESTROYED) return false;
+        if (creatorBoard[x][y] == EMPTY) creatorBoard[x][y] = TARGETED;
+        if (creatorBoard[x][y] == PLACED) creatorBoard[x][y] = DESTROYED;
+        return true;
+    } else if (*auth == *challenger) {
+        if (challengerBoard[x][y] == TARGETED || challengerBoard[x][y] == DESTROYED) return false;
+        if (challengerBoard[x][y] == EMPTY) challengerBoard[x][y] = TARGETED;
+        if (challengerBoard[x][y] == PLACED) challengerBoard[x][y] = DESTROYED;
+        return true;
+    }
     // TODO check if game finished
-    return true;
+    return false;
 }
 
-bool Game::setChallenger(User *_challenger) {
+bool Game::setChallenger(User *_challenger, vector<int> coords) {
+    if (coords.size() != 2 * NUMBER_OF_SHIPS)
+        throw "8 ship coordinates required";
+
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        challengerBoard[i].fill(EMPTY);
+    }
+
+    for (int i = 0; i < NUMBER_OF_SHIPS; i++) {
+        challengerBoard[coords[i * 2]][coords[i * 2 + 1]] = PLACED;
+    }
+
     challenger = _challenger;
     state = PLAYING;
     return true;
 }
 
-void Game::printBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> board) {
+string Game::printBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> board) {
+    string response;
     for (auto &row : board) {
         for (auto &cell : row)
-            std::cout << cell << " ";
-        std::cout << std::endl;
+            response += to_string(cell) + " ";
+        response += "\n";
     }
-    std::cout << std::endl;
+    return response;
 }
 
-std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> Game::getBoard() const {
-    return board;
+std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> Game::getCreatorBoard() const {
+    return creatorBoard;
 }
 
-std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> Game::getOpponentBoard() const {
-    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> opponent_board;
-    for (int i = 0; i < BOARD_SIZE; i++) {
-        for (int j = 0; j < BOARD_SIZE; j++) {
-            opponent_board[i][j] = board[i][j] == PLACED ? EMPTY : board[i][j];
-        }
-    }
+std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> Game::getChallengerBoard() const {
+    return challengerBoard;
+}
+
+std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE>
+Game::cleanOpponentBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> opponent_board) {
+    for (int i = 0; i < BOARD_SIZE; i++)
+        for (int j = 0; j < BOARD_SIZE; j++)
+            if (opponent_board[i][j] == PLACED)
+                opponent_board[i][j] = EMPTY;
     return opponent_board;
 }
 

@@ -19,9 +19,10 @@ public:
     BattleshipServer();
     void handleRequest(http_request);
     string registerUser(string username);
-    string createGame(string username, string secret);
-    string joinGame(string username, string secret, string gameId);
+    string createGame(string username, string secret, string ships);
+    string joinGame(string username, string secret, string gameId, string ships);
     string getOpenGames();
+    string getGameState(string username, string secret, string gameId);
 
     virtual ~BattleshipServer();
 
