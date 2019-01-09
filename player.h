@@ -14,6 +14,8 @@ public:
     QString getName();
     bool hasLost();
     int board[10][10];
+    void takeTurn(Player* p,int x, int y);
+    int shipesPlaced=0;
 
 private:
     QString name;

@@ -2,6 +2,7 @@
 #include <QVector>
 #include <QPointF>
 #include "battleshipgame.h"
+#include <string>
 
 extern BattleshipGame* game;
 
@@ -32,8 +33,15 @@ int Cell::getY(){
 }
 
 void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
-    if(game->player1->isHit(this->getX(),this->getY())){
-        std::cout<< "Pogodak" << std::endl;
-     }
+    if(event->button()==Qt::LeftButton){
+        if(game->getWhoseTurn()== "player1"){
+
+            game->player1->takeTurn(game->player2,this->getX(),this->getY());
+        }
+        else{
+
+            game->player2->takeTurn(game->player1,this->getX(),this->getY());
+        }
+    }
 }
 

@@ -15,7 +15,7 @@ cellBoard::cellBoard()
 }
 
 
-QList<Cell *> cellBoard::getCells(){
+QList<Cell*> cellBoard::getCells(){
     return cells;
 }
 
