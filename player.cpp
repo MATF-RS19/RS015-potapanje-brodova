@@ -4,7 +4,7 @@ Player::Player()
 {
     for(int i=0;i<10;i++){
         for(int j=0;j<10;j++){
-            board[i][j]=0;
+            this->board[i][j]=0;
         }
     }
 }
@@ -18,10 +18,10 @@ QString Player::getName(){
 }
 
 bool Player::isHit(int x,int y){
-    if(board[x][y] == 1){
-        board[x][y]=3;
+    if(this->board[x][y] == 1){
+        this->board[x][y]=3;
         return true;
     }
-    board[x][y]=2;
+    this->board[x][y]=2;
     return false;
 }

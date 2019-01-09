@@ -14,6 +14,7 @@ public:
     QString getName();
     bool hasLost();
     int board[10][10];
+
 private:
     QString name;
 };
