@@ -11,12 +11,16 @@ private:
     bool isPlaced;
     int x_coord;
     int y_coord;
+    QString playerName;
 
 public:
     Cell(QGraphicsItem* parent = NULL);
     bool getIsPlaced();
     int getX();
     int getY();
+    void setPlayerName(QString playerName);
+    QString getPlayerName(void);
+
 
     void setIsPlaced(bool b);
     void setCoords(int x,int y);

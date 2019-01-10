@@ -4,6 +4,7 @@
 #include <time.h>
 #include <QPushButton>
 #include <QGraphicsProxyWidget>
+#include <QLineEdit>
 
 BattleshipGame::BattleshipGame(QWidget *parent)
 {
@@ -19,19 +20,27 @@ BattleshipGame::BattleshipGame(QWidget *parent)
 }
 
 void BattleshipGame::start(){
-    playButton->hide();
-    scene->clear();
-    cellBoard1= new cellBoard();
-    cellBoard2= new cellBoard();
-    cellBoard1->placeBoard(100,350,10,10);
-    cellBoard2->placeBoard(400,350,10,10);
     player1 = new Player();
     player2 = new Player();
-    player1->setName("player1");
+    QString name = textName->text();
+    player1->setName(name);
     player2->setName("player2");
+    std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
+
+
+
+
+    playButton->hide();
+    scene->clear();
+
+    player1->cellboard->setPlayerName(player1->getName());
+    player2->cellboard->setPlayerName(player2->getName());
+    player1->cellboard->placeBoard(100,350,10,10);
+    player2->cellboard->placeBoard(400,350,10,10);
     srand(time(NULL));
     int random1=rand()%10;
     int random2=rand()%10;
+    setWhoseTurn(player1->getName());
 
     player1->board[random1][random2] = 1;
     for(int i=0;i<10;i++){
@@ -86,6 +95,14 @@ void BattleshipGame::displayMenu(){
     playButton->setGeometry(bx,by,50,25);
     connect(playButton,SIGNAL(clicked()),this,SLOT(start()));
     playButton->show();
+    playButton->setEnabled(false);
+
+
+    textName = new QLineEdit;
+    textName->setPlaceholderText("Enter your name");
+    textName->setFocus();
+    scene->addWidget(textName);
+    connect(textName,SIGNAL(textChanged(QString)),this,SLOT(editText()));
 }
 
 
@@ -98,3 +115,10 @@ void BattleshipGame::displayMenu(){
     }
 }
 */
+
+void BattleshipGame::editText(){
+    if(!textName->text().isEmpty())
+        playButton->setEnabled(true);
+    else
+        playButton->setEnabled(false);
+}

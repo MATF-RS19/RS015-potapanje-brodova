@@ -30,6 +30,7 @@ void cellBoard::createColumn(int x,int y,int numOfrows,int curr_i){
 
     for(int i=0;i<numOfrows;i++){
         Cell* cell = new Cell();
+        cell->setPlayerName(this->getPlayerName());
         cell->setPos(x,y+SPACE*i);
 
         cell->setIsPlaced(true);
@@ -40,4 +41,12 @@ void cellBoard::createColumn(int x,int y,int numOfrows,int curr_i){
         game->scene->addItem(cell);
 
     }
+}
+
+void cellBoard::setPlayerName(QString playerName){
+    this->playerName=playerName;
+}
+
+QString cellBoard::getPlayerName(){
+    return this->playerName;
 }

@@ -1,5 +1,6 @@
 #include "player.h"
 #include "battleshipgame.h"
+#include "cellboard.h"
 extern BattleshipGame* game;
 
 Player::Player()
@@ -9,6 +10,7 @@ Player::Player()
             this->board[i][j]=0;
         }
     }
+    cellboard = new cellBoard();
 }
 
 void Player::setName(QString name){
@@ -29,23 +31,28 @@ bool Player::isHit(int x,int y){
 }
 
 
-void Player::takeTurn(Player* p,int x, int y){
-    if(p->board[x][y] ==2 || p->board[x][y] == 3){
+void Player::takeTurn(Player* enemy,int x, int y,QString player){
+
+    if(enemy->getName() != player){
+        return;
+    }
+
+    if(enemy->board[x][y] ==2 || enemy->board[x][y] == 3){
         return;
     }
 
     std::cout << "polje" << x << " " << y << "gadja :" << game->getWhoseTurn().toStdString() << std::endl;
 
 
-    if(p->board[x][y]==1){
+    if(enemy->board[x][y]==1){
         std::cout << "pogodak" << std::endl;
-        p->board[x][y]=3;
-        game->setWhoseTurn(p->getName());
+        enemy->board[x][y]=3;
+        game->setWhoseTurn(enemy->getName());
     }
     else {
             std::cout << "promasaj" << std::endl;
-            p->board[x][y]=2;
-            game->setWhoseTurn(p->getName());
+            enemy->board[x][y]=2;
+            game->setWhoseTurn(enemy->getName());
     }
 }
 

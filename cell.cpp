@@ -34,14 +34,22 @@ int Cell::getY(){
 
 void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
     if(event->button()==Qt::LeftButton){
-        if(game->getWhoseTurn()== "player1"){
+        if(game->getWhoseTurn()== game->player1->getName()){
 
-            game->player1->takeTurn(game->player2,this->getX(),this->getY());
+            game->player1->takeTurn(game->player2,this->getX(),this->getY(),this->getPlayerName());
         }
         else{
 
-            game->player2->takeTurn(game->player1,this->getX(),this->getY());
+            game->player2->takeTurn(game->player1,this->getX(),this->getY(),this->getPlayerName());
         }
     }
 }
+
+void Cell::setPlayerName(QString playerName){
+    this->playerName=playerName;
+}
+QString Cell::getPlayerName(void){
+    return this->playerName;
+}
+
 

@@ -6,6 +6,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QPushButton>
+#include <QLineEdit>
 #include "cellboard.h"
 #include "player.h"
 
@@ -19,8 +20,6 @@ public:
     BattleshipGame(QWidget* parent=NULL);
     void setWhoseTurn(QString);
     QGraphicsScene* scene;
-    cellBoard* cellBoard1;
-    cellBoard* cellBoard2;
     Player* player1;
     Player* player2;
     QString getWhoseTurn(void);
@@ -28,13 +27,18 @@ public:
     void setFinishedPlacing(bool b);
     void displayMenu();
     QPushButton* playButton;
+    QLineEdit* textName;
+
+
+
 
 public slots:
     void start();
+    void editText();
    // void lock();
 
 private:
-    QString whoseTurn="player1";
+    QString whoseTurn;
     bool finishedPlacing= false;
 };
 
