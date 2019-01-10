@@ -17,7 +17,7 @@ using namespace std;
 class GameManager {
 private:
 public:
-    vector<User> users;
+    vector<User*> users;
     vector<Game> games;
 
     string registerUser(string name);
