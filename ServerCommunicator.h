@@ -1,0 +1,22 @@
+//
+// Created by Nikola Vukovic on 2019-01-09.
+//
+
+#ifndef SERVER_SERVERCOMMUNICATOR_H
+#define SERVER_SERVERCOMMUNICATOR_H
+
+#include <string>
+
+using namespace std;
+
+class ServerCommunicator {
+public:
+    string registerUser(string username);
+    string createGame(string username, string secret, string ships);
+    string joinGame(string username, string secret, string ships, string gameId);
+    string getGameState(string username, string secret, string gameId);
+    string playTurn(string username, string secret, string gameId, int turn_x, int turn_y);
+};
+
+
+#endif //SERVER_SERVERCOMMUNICATOR_H
