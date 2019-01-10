@@ -11,6 +11,7 @@ Player::Player()
         }
     }
     cellboard = new cellBoard();
+    shipsPlaced=0;
 }
 
 void Player::setName(QString name){

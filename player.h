@@ -21,6 +21,7 @@ public:
     QString getSecret();
     void setSecret(QString secret);
     cellBoard* cellboard;
+    int shipsPlaced;
 
 private:
     QString name;

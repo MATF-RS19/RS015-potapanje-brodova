@@ -20,29 +20,17 @@ BattleshipGame::BattleshipGame(QWidget *parent)
 }
 
 void BattleshipGame::start(){
-    player1 = new Player();
     player2 = new Player();
-    QString name = textName->text();
-    player1->setName(name);
     player2->setName("player2");
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
 
-
-
-
-    playButton->hide();
-    scene->clear();
-
-    player1->cellboard->setPlayerName(player1->getName());
     player2->cellboard->setPlayerName(player2->getName());
-    player1->cellboard->placeBoard(100,350,10,10);
     player2->cellboard->placeBoard(400,350,10,10);
     srand(time(NULL));
     int random1=rand()%10;
     int random2=rand()%10;
     setWhoseTurn(player1->getName());
 
-    player1->board[random1][random2] = 1;
     for(int i=0;i<10;i++){
         for(int j =0;j<10;j++)
             std::cout << player1->board[i][j] << " ";
@@ -93,7 +81,7 @@ void BattleshipGame::displayMenu(){
     int bx=100;
     int by=250;
     playButton->setGeometry(bx,by,50,25);
-    connect(playButton,SIGNAL(clicked()),this,SLOT(start()));
+    connect(playButton,SIGNAL(clicked()),this,SLOT(lock()));
     playButton->show();
     playButton->setEnabled(false);
 
@@ -106,15 +94,28 @@ void BattleshipGame::displayMenu(){
 }
 
 
-/*void BattleshipGame::lock(){
-    if(player1->shipsPlaced != 5 && player2->shipesPlaced != 5){
-        return;
-    }
-    else{
+void BattleshipGame::lock(){
+    player1 = new Player();
+    QString name = textName->text();
+    player1->setName(name);
+    player1->cellboard->setPlayerName(player1->getName());
 
-    }
+    playButton->hide();
+    scene->clear();
+
+    player1->cellboard->placeBoard(100,350,10,10);
+
+    lockButton = new QPushButton("LOCK",this);
+    int bx=100;
+    int by=250;
+    lockButton->setGeometry(bx,by,50,25);
+    connect(lockButton,SIGNAL(clicked()),this,SLOT(start()));
+    lockButton->show();
+    lockButton->setEnabled(false);
+
+
+
 }
-*/
 
 void BattleshipGame::editText(){
     if(!textName->text().isEmpty())

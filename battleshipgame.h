@@ -27,6 +27,7 @@ public:
     void setFinishedPlacing(bool b);
     void displayMenu();
     QPushButton* playButton;
+    QPushButton* lockButton;
     QLineEdit* textName;
 
 
@@ -35,11 +36,12 @@ public:
 public slots:
     void start();
     void editText();
-   // void lock();
+    void lock();
 
 private:
     QString whoseTurn;
     bool finishedPlacing= false;
+
 };
 
 #endif // BATTLESHIPGAME_H

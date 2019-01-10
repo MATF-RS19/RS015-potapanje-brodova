@@ -34,13 +34,62 @@ int Cell::getY(){
 
 void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
     if(event->button()==Qt::LeftButton){
-        if(game->getWhoseTurn()== game->player1->getName()){
+        if(game->getFinishedPlacing()){
+            if(game->getWhoseTurn()== game->player1->getName())
+            {
+                game->player1->takeTurn(game->player2,this->getX(),this->getY(),this->getPlayerName());
+            }
 
-            game->player1->takeTurn(game->player2,this->getX(),this->getY(),this->getPlayerName());
+
+            else
+            {
+                game->player2->takeTurn(game->player1,this->getX(),this->getY(),this->getPlayerName());
+            }
         }
         else{
+            if(game->player1->shipsPlaced == 5)
+            {
+                std::cout << "ships already placed" << std::endl;
+                return;
+            }
+            else
+            {
+                game->player1->board[this->getX()][this->getY()] = 1;
+                game->player1->shipsPlaced++;
+                std::cout << "ship placed at : " << this->getX() << "," << this->getY() << ". Placed" << game->player1->shipsPlaced << "ships" << std::endl;
+                for(int i=0;i<10;i++){
+                    for(int j =0;j<10;j++)
+                        std::cout << game->player1->board[i][j] << " ";
+                    std::cout << std::endl;
+                }
 
-            game->player2->takeTurn(game->player1,this->getX(),this->getY(),this->getPlayerName());
+            }
+        }
+    }
+    if(event->button()==Qt::RightButton)
+    {
+        if(game->getFinishedPlacing()){
+            for(int i=0;i<10;i++){
+                for(int j =0;j<10;j++)
+                    std::cout << game->player1->board[i][j] << " ";
+                std::cout << std::endl;
+            }
+
+            return;
+        }
+        else
+        {
+            if(game->player1->board[this->getX()][this->getY()] == 1){
+                game->player1->board[this->getX()][this->getY()] = 0;
+                game->player1->shipsPlaced--;
+                std::cout << "removed ship at : " << this->getX() << "," << this->getY() << ". Placed" << game->player1->shipsPlaced << "ships" << std::endl;
+                for(int i=0;i<10;i++){
+                    for(int j =0;j<10;j++)
+                        std::cout << game->player1->board[i][j] << " ";
+                    std::cout << std::endl;
+                }
+
+            }
         }
     }
 }
