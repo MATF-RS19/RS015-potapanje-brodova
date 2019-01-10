@@ -20,6 +20,9 @@ BattleshipGame::BattleshipGame(QWidget *parent)
 }
 
 void BattleshipGame::start(){
+    if(!getFinishedPlacing()){
+        return;
+    }
     player2 = new Player();
     player2->setName("player2");
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
@@ -27,18 +30,7 @@ void BattleshipGame::start(){
     player2->cellboard->setPlayerName(player2->getName());
     player2->cellboard->placeBoard(400,350,10,10);
     srand(time(NULL));
-    int random1=rand()%10;
-    int random2=rand()%10;
     setWhoseTurn(player1->getName());
-
-    for(int i=0;i<10;i++){
-        for(int j =0;j<10;j++)
-            std::cout << player1->board[i][j] << " ";
-        std::cout << std::endl;
-    }
-
-
-
 
 // sinhronizacija grafickih polja sa board poljem u playeru ( dodati atribut name u cellBoard radi sinhronizacije)
 
@@ -112,7 +104,6 @@ void BattleshipGame::lock(){
     connect(lockButton,SIGNAL(clicked()),this,SLOT(start()));
     lockButton->show();
     lockButton->setEnabled(false);
-
 
 
 }
