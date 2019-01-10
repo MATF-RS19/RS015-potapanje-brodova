@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include "cpprest/http_listener.h"
+#include "../config.h"
 
 using namespace std;
 using namespace web;
@@ -99,7 +100,7 @@ BattleshipServer::BattleshipServer() {
 
     cout << "Web Server starting..." << endl;
 
-    listener = http_listener("http://localhost:8080");
+    listener = http_listener(string("http://0.0.0.0:") + SERVER_PORT);
     listener.support(methods::GET, [this](http_request request) {
         this->handleRequest(request);
     });

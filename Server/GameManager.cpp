@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <algorithm>
 
 bool GameManager::checkAuth(User *auth) {
     return checkAuth(auth->getName(), auth->getSecret());

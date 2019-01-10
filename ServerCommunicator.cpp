@@ -5,15 +5,17 @@
 #include "ServerCommunicator.h"
 
 #include <cpprest/http_client.h>
+#include "config.h"
 
 using namespace std;
 using namespace web;
 using namespace web::http;
 using namespace web::http::client;
 
+ServerCommunicator::ServerCommunicator() : client(string("http://") + SERVER_ADDRESS + ":" + SERVER_PORT) {}
+
 string ServerCommunicator::registerUser(string username) {
     int statusCode = 200;
-    http_client client("http://localhost:8080/");
     uri_builder builder("/register");
     builder.append_query("username", username);
     pplx::task<string> requestTask = client.request(methods::GET, builder.to_string())
@@ -32,7 +34,6 @@ string ServerCommunicator::registerUser(string username) {
 
 string ServerCommunicator::createGame(string username, string secret, string ships) {
     int statusCode = 200;
-    http_client client("http://localhost:8080/");
     uri_builder builder("/create");
     builder.append_query("username", username);
     builder.append_query("secret", secret);
@@ -53,7 +54,6 @@ string ServerCommunicator::createGame(string username, string secret, string shi
 
 string ServerCommunicator::joinGame(string username, string secret, string gameId, string ships) {
     int statusCode = 200;
-    http_client client("http://localhost:8080/");
     uri_builder builder("/join");
     builder.append_query("username", username);
     builder.append_query("secret", secret);
@@ -75,7 +75,6 @@ string ServerCommunicator::joinGame(string username, string secret, string gameI
 
 string ServerCommunicator::getGameState(string username, string secret, string gameId) {
     int statusCode = 200;
-    http_client client("http://localhost:8080/");
     uri_builder builder("/game");
     builder.append_query("username", username);
     builder.append_query("secret", secret);
@@ -96,7 +95,6 @@ string ServerCommunicator::getGameState(string username, string secret, string g
 
 string ServerCommunicator::playTurn(string username, string secret, string gameId, int turn_x, int turn_y) {
     int statusCode = 200;
-    http_client client("http://localhost:8080/");
     uri_builder builder("/play");
     builder.append_query("username", username);
     builder.append_query("secret", secret);

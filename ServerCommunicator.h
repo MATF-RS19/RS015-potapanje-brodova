@@ -6,11 +6,16 @@
 #define SERVER_SERVERCOMMUNICATOR_H
 
 #include <string>
+#include <cpprest/http_client.h>
 
 using namespace std;
+using namespace web::http::client;
 
 class ServerCommunicator {
+private:
+    http_client client;
 public:
+    ServerCommunicator();
     string registerUser(string username);
     string createGame(string username, string secret, string ships);
     string joinGame(string username, string secret, string ships, string gameId);
