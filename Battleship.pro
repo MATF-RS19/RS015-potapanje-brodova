@@ -30,13 +30,15 @@ SOURCES += \
     cell.cpp \
     cellboard.cpp \
     battleshipgame.cpp \
-    player.cpp
+    player.cpp \
+    ServerCommunicator.cpp
 
 HEADERS += \
     cell.h \
     cellboard.h \
     battleshipgame.h \
-    player.h
+    player.h \
+    ServerCommunicator.h
 
 FORMS +=
 
@@ -44,3 +46,14 @@ FORMS +=
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+INCLUDEPATH += /usr/local/opt/openssl/include
+INCLUDEPATH += /usr/local/opt/cpprestsdk/include
+INCLUDEPATH += /usr/local/opt/boost/include
+
+macx: LIBS += -L/usr/local/opt/openssl/lib/ -lcrypto
+LIBS += -lcpprest -lcrypto -lssl -lboost_system -lboost_chrono
+LIBS += -L/usr/local/opt/cpprestsdk/lib/
+LIBS += -L/usr/local/opt/boost/lib/
+macx: LIBS += -lboost_thread-mt
+unix:!macx|win: LIBS += -lboost_thread

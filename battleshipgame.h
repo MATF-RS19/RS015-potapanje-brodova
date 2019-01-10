@@ -9,7 +9,7 @@
 #include <QLineEdit>
 #include "cellboard.h"
 #include "player.h"
-
+#include "ServerCommunicator.h"
 
 
 class BattleshipGame: public QGraphicsView
@@ -18,6 +18,7 @@ class BattleshipGame: public QGraphicsView
 
 public:
     BattleshipGame(QWidget* parent=NULL);
+    ServerCommunicator interface;
     void setWhoseTurn(QString);
     QGraphicsScene* scene;
     Player* player1;

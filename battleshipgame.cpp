@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QGraphicsProxyWidget>
 #include <QLineEdit>
+#include "ServerCommunicator.h"
 
 BattleshipGame::BattleshipGame(QWidget *parent)
 {
@@ -75,7 +76,6 @@ void BattleshipGame::displayMenu(){
     playButton->show();
     playButton->setEnabled(false);
 
-
     textName = new QLineEdit;
     textName->setPlaceholderText("Enter your name");
     textName->setFocus();
@@ -85,25 +85,32 @@ void BattleshipGame::displayMenu(){
 
 
 void BattleshipGame::lock(){
-    player1 = new Player();
-    QString name = textName->text();
-    player1->setName(name);
-    player1->cellboard->setPlayerName(player1->getName());
+    try {
+        QString name = textName->text();
 
-    playButton->hide();
-    scene->clear();
+        string secret = interface.registerUser(name.toStdString());
+        cout << secret << endl;
 
-    player1->cellboard->placeBoard(100,350,10,10);
+        player1 = new Player();
+        player1->setName(name);
+        player1->setSecret(QString::fromStdString(secret));
+        player1->cellboard->setPlayerName(player1->getName());
 
-    lockButton = new QPushButton("LOCK",this);
-    int bx=100;
-    int by=250;
-    lockButton->setGeometry(bx,by,50,25);
-    connect(lockButton,SIGNAL(clicked()),this,SLOT(start()));
-    lockButton->show();
-    lockButton->setEnabled(false);
+        playButton->hide();
+        scene->clear();
 
+        player1->cellboard->placeBoard(100,350,10,10);
 
+        lockButton = new QPushButton("LOCK",this);
+        int bx=100;
+        int by=250;
+        lockButton->setGeometry(bx,by,50,25);
+        connect(lockButton,SIGNAL(clicked()),this,SLOT(start()));
+        lockButton->show();
+        lockButton->setEnabled(false);
+    } catch (string const err) {
+        cerr << err << endl;
+    }
 }
 
 void BattleshipGame::editText(){

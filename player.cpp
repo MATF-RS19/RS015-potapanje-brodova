@@ -22,6 +22,14 @@ QString Player::getName(){
     return name;
 }
 
+void Player::setSecret(QString secret){
+    this->secret = secret;
+}
+
+QString Player::getSecret(){
+    return secret;
+}
+
 bool Player::isHit(int x,int y){
     if(this->board[x][y] == 1){
         this->board[x][y]=3;
