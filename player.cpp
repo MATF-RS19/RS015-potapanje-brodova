@@ -57,4 +57,3 @@ void Player::takeTurn(Player* enemy,int x, int y,QString player){
     }
 }
 
-

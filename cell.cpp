@@ -55,9 +55,8 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
             else
             {
                 game->player1->board[this->getX()][this->getY()] = 1;
-                game->player1->shipsPlaced++;
-                if(game->player1->shipesPlaced == 5){
-                    game->setFinishedPlacing(true);
+                game->player1->shipsPlaced += 1;
+                if(game->player1->shipsPlaced == 5){
                     game->lockButton->setEnabled(true);
                 }
                 std::cout << "ship placed at : " << this->getX() << "," << this->getY() << ". Placed " << game->player1->shipsPlaced << " ships" << std::endl;
@@ -80,13 +79,12 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
             if(game->player1->board[this->getX()][this->getY()] == 1){
                 game->player1->board[this->getX()][this->getY()] = 0;
                 game->player1->shipsPlaced--;
-                std::cout << "removed ship at : " << this->getX() << "," << this->getY() << ". Placed" << game->player1->shipsPlaced << "ships" << std::endl;
+                std::cout << "removed ship at : " << this->getX() << "," << this->getY() << " Placed" << game->player1->shipsPlaced << "ships" << std::endl;
                 for(int i=0;i<10;i++){
                     for(int j =0;j<10;j++)
                         std::cout << game->player1->board[i][j] << " ";
                     std::cout << std::endl;
                 }
-                game->setFinishedPlacing(false);
                 game->lockButton->setEnabled(false);
 
             }

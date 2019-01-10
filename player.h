@@ -17,11 +17,11 @@ public:
     bool hasLost();
     int board[10][10];
     void takeTurn(Player* p,int x, int y, QString player);
-    int shipesPlaced=0;
     QString getSecret();
     void setSecret(QString secret);
     cellBoard* cellboard;
     int shipsPlaced;
+
 
 private:
     QString name;

@@ -20,9 +20,7 @@ BattleshipGame::BattleshipGame(QWidget *parent)
 }
 
 void BattleshipGame::start(){
-    if(!getFinishedPlacing()){
-        return;
-    }
+    setFinishedPlacing(true);
     player2 = new Player();
     player2->setName("player2");
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
