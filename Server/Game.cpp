@@ -8,7 +8,8 @@
 
 using namespace std;
 
-Game::Game(User *creator, vector<int> coords) : creator(creator), challenger(creator) {
+Game::Game(User *_creator, vector<int> coords) {
+    creator = _creator;
     if (coords.size() != 2 * NUMBER_OF_SHIPS)
         throw "8 ship coordinates required";
 
@@ -28,20 +29,20 @@ bool Game::playTurn(User *auth, int x, int y) {
         return false;
     if (*auth == *creator) {
         if (turn != CREATOR) return false;
-        if (creatorBoard[x][y] == TARGETED || creatorBoard[x][y] == DESTROYED) return false;
-        if (creatorBoard[x][y] == EMPTY) creatorBoard[x][y] = TARGETED;
-        if (creatorBoard[x][y] == PLACED) {
-            creatorBoard[x][y] = DESTROYED;
+        if (challengerBoard[x][y] == TARGETED || challengerBoard[x][y] == DESTROYED) return false;
+        if (challengerBoard[x][y] == EMPTY) challengerBoard[x][y] = TARGETED;
+        if (challengerBoard[x][y] == PLACED) {
+            challengerBoard[x][y] = DESTROYED;
             checkState();
         }
         turn = CHALLENGER;
         return true;
     } else if (*auth == *challenger) {
         if (turn != CHALLENGER) return false;
-        if (challengerBoard[x][y] == TARGETED || challengerBoard[x][y] == DESTROYED) return false;
-        if (challengerBoard[x][y] == EMPTY) challengerBoard[x][y] = TARGETED;
-        if (challengerBoard[x][y] == PLACED) {
-            challengerBoard[x][y] = DESTROYED;
+        if (creatorBoard[x][y] == TARGETED || creatorBoard[x][y] == DESTROYED) return false;
+        if (creatorBoard[x][y] == EMPTY) creatorBoard[x][y] = TARGETED;
+        if (creatorBoard[x][y] == PLACED) {
+            creatorBoard[x][y] = DESTROYED;
             checkState();
         }
         turn = CREATOR;

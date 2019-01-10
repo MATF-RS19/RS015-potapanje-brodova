@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <algorithm>
 
 bool GameManager::checkAuth(User *auth) {
     return checkAuth(auth->getName(), auth->getSecret());
@@ -15,19 +16,19 @@ bool GameManager::checkAuth(User *auth) {
 
 bool GameManager::checkAuth(string username, string secret) const {
     auto user = find_if(users.begin(), users.end(),
-                        [username](const User &user) { return user.getName() == username; });
+                        [username](const User *user) { return user->getName() == username; });
     if (user == users.end()) return false;
-    return user->getName() == username && user->getSecret() == secret;
+    return (*user)->getName() == username && (*user)->getSecret() == secret;
 }
 
 string GameManager::registerUser(std::string name) {
-    if (std::find_if(users.begin(), users.end(), [name](const User &user) {
-        return user.getName() == name;
+    if (std::find_if(users.begin(), users.end(), [name](const User *user) {
+        return user->getName() == name;
     }) != users.end())
         throw "Username taken";
-    auto user = User(name);
+    auto user = new User(name);
     users.emplace_back(user);
-    return user.getSecret();
+    return user->getSecret();
 }
 
 string GameManager::createGame(string username, string secret, string ships) {
@@ -71,21 +72,21 @@ Game *GameManager::getGameById(std::string gameId) {
 }
 
 const User *GameManager::getUserByName(std::string name) const {
-    auto user = find_if(users.begin(), users.end(), [name](const User &_user) -> bool {
-        return _user.getName() == name;
+    auto user = find_if(users.begin(), users.end(), [name](const User *_user) -> bool {
+        return _user->getName() == name;
     });
     if (user == users.end())
         throw "Game with given ID not found";
-    return &*user;
+    return *user;
 }
 
 User *GameManager::getUserByName(std::string name) {
-    auto user = find_if(users.begin(), users.end(), [name](const User &_user) -> bool {
-        return _user.getName() == name;
+    auto user = find_if(users.begin(), users.end(), [name](const User *_user) -> bool {
+        return _user->getName() == name;
     });
     if (user == users.end())
         throw "Game with given ID not found";
-    return &*user;
+    return *user;
 }
 
 string GameManager::getGameState(string username, string secret, std::string gameId) const {
