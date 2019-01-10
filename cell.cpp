@@ -54,6 +54,9 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
             }
             else
             {
+                if(game->player1->board[this->getX()][this->getY()] == 1){
+                    return;
+                }
                 game->player1->board[this->getX()][this->getY()] = 1;
                 game->player1->shipsPlaced += 1;
                 if(game->player1->shipsPlaced == 5){
