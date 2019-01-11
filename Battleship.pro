@@ -31,7 +31,8 @@ SOURCES += \
     cellboard.cpp \
     battleshipgame.cpp \
     player.cpp \
-    ServerCommunicator.cpp
+    ServerCommunicator.cpp \
+    button.cpp
 
 HEADERS += \
     cell.h \
@@ -39,7 +40,8 @@ HEADERS += \
     battleshipgame.h \
     player.h \
     ServerCommunicator.h \
-    config.h
+    config.h \
+    button.h
 
 FORMS +=
 

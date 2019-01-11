@@ -1,12 +1,13 @@
 #include "player.h"
 #include "battleshipgame.h"
 #include "cellboard.h"
+#include "config.h"
 extern BattleshipGame* game;
 
 Player::Player()
 {
-    for(int i=0;i<10;i++){
-        for(int j=0;j<10;j++){
+    for(int i=0;i<BOARD_SIZE;i++){
+        for(int j=0;j<BOARD_SIZE;j++){
             this->board[i][j]=0;
         }
     }

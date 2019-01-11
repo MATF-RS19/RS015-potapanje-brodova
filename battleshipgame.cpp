@@ -8,6 +8,10 @@
 #include "ServerCommunicator.h"
 #include <QImage>
 #include "config.h"
+#include <vector>
+#include <string>
+#include <QLabel>
+#include <button.h>
 
 BattleshipGame::BattleshipGame(QWidget *parent)
 {
@@ -44,16 +48,6 @@ void BattleshipGame::start(){
                     ships += to_string(i) + "," + to_string(j) + ",";
 
         // TODO obrisati
-        ships += to_string(0) + "," + to_string(0) + ",";
-        ships += to_string(0) + "," + to_string(1) + ",";
-        ships += to_string(0) + "," + to_string(2) + ",";
-
-        string gameId = interface.createGame(
-            player1->getName().toStdString(),
-            player1->getSecret().toStdString(),
-            ships
-        );
-        cout << "Created game ID: " << gameId << endl;
 
         player2->cellboard->setPlayerName(player2->getName());
         player2->setBoardX(700);
@@ -143,13 +137,33 @@ void BattleshipGame::lobby(){
         createButton->show();
         createButton->setEnabled(true);
 
-        panel = new QGraphicsRectItem(100,100,500,300);
+        std::vector<string> games = interface.getOpenGames();
+        std::cout << "G" << std::endl;
+        for(auto i = games.begin(); i != games.end() ; i++){
+            std::cout << "games : " << *i <<std::endl;
+        }
+
+        QGraphicsRectItem* panel = new QGraphicsRectItem(100,100,500,300);
         QBrush brush;
         brush.setStyle(Qt::SolidPattern);
         brush.setColor(Qt::white);
         panel->setBrush(brush);
         panel->setOpacity(1);
         scene->addItem(panel);
+        QGraphicsTextItem* label;
+        Button* button;
+        int j=0;
+
+        for(auto i = games.begin(); i != games.end() ;j++, i++){
+           label = scene->addText(QString::fromStdString(*i));
+           label->setPos(102,102+20*j);
+           button = new Button(QString("Join"),50,20);
+           button->setPos(400,102 + 20*j);
+           connect(button,SIGNAL(clicked()),this,SLOT(lock()));
+           scene->addItem(button);
+        }
+
+
 
         } catch (string const err) {
         cerr << err << endl;

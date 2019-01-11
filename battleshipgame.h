@@ -30,9 +30,8 @@ public:
     QPushButton* playButton;
     QPushButton* lockButton;
     QPushButton* createButton;
+    vector<QPushButton*> joinButtons;
     QLineEdit* textName;
-    QGraphicsRectItem* panel;
-
 
 
 

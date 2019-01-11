@@ -4,6 +4,7 @@
 #include "battleshipgame.h"
 #include <string>
 #include <QGraphicsPixmapItem>
+#include "config.h"
 
 extern BattleshipGame* game;
 
@@ -49,7 +50,7 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
             }
         }
         else{
-            if(game->player1->shipsPlaced == 5)
+            if(game->player1->shipsPlaced == NUMBER_OF_SHIPS)
             {
                 std::cout << "ships already placed" << std::endl;
                 return;
@@ -71,7 +72,7 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
                 p->show();
                 game->scene->addItem(p);
 
-                if(game->player1->shipsPlaced == 5){
+                if(game->player1->shipsPlaced == NUMBER_OF_SHIPS){
                     game->lockButton->setEnabled(true);
                 }
                 std::cout << "ship placed at : " << this->getX() << "," << this->getY() << ". Placed " << game->player1->shipsPlaced << " ships" << std::endl;
@@ -89,7 +90,6 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
                 game->player1->board[this->getX()][this->getY()] = 0;
                 game->player1->shipsPlaced--;
                 this->setOpacity(1);
-//              skinuti sliku sa ekrana ???
                 game->scene->removeItem(p);
                 delete p;
                 std::cout << "removed ship at : " << this->getX() << "," << this->getY() << " Placed" << game->player1->shipsPlaced << "ships" << std::endl;
