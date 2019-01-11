@@ -34,7 +34,7 @@ int Cell::getY(){
 }
 
 void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
-    QGraphicsPixmapItem* p = new QGraphicsPixmapItem();
+
     if(event->button()==Qt::LeftButton){
         if(game->getFinishedPlacing()){
             if(game->getWhoseTurn()== game->player1->getName())
@@ -63,10 +63,9 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
                 game->player1->shipsPlaced += 1;
 
                 this->setOpacity(0.5);
+                p = new QGraphicsPixmapItem();
 
-                //ne izbacuje sliku????
                 QPixmap map(":/images/images/ship.png");
-                std::cout << "pixmap is " << map.height() << std::endl;
                 p->setPixmap(map);
                 p->setPos(100 + 38*this->getY(), 350 + 38*this->getX());
                 p->show();
@@ -90,7 +89,9 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
                 game->player1->board[this->getX()][this->getY()] = 0;
                 game->player1->shipsPlaced--;
                 this->setOpacity(1);
-                delete(p);
+//              skinuti sliku sa ekrana ???
+                game->scene->removeItem(p);
+                delete p;
                 std::cout << "removed ship at : " << this->getX() << "," << this->getY() << " Placed" << game->player1->shipsPlaced << "ships" << std::endl;
                 game->lockButton->setEnabled(false);
 

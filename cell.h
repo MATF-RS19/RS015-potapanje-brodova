@@ -20,6 +20,8 @@ public:
     int getY();
     void setPlayerName(QString playerName);
     QString getPlayerName(void);
+    QGraphicsPixmapItem* p;
+
 
 
     void setIsPlaced(bool b);
