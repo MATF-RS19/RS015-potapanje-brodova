@@ -5,14 +5,12 @@
 #ifndef SERVER_GAME_H
 #define SERVER_GAME_H
 
-#define BOARD_SIZE 8
-#define NUMBER_OF_SHIPS 8
-
 #include <string>
 #include <array>
 #include <vector>
 
 #include "User.h"
+#include "../config.h"
 
 using namespace std;
 

@@ -38,7 +38,8 @@ HEADERS += \
     cellboard.h \
     battleshipgame.h \
     player.h \
-    ServerCommunicator.h
+    ServerCommunicator.h \
+    config.h
 
 FORMS +=
 

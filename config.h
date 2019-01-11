@@ -8,4 +8,7 @@
 #define SERVER_ADDRESS "138.197.183.16"
 #define SERVER_PORT "8080"
 
+#define BOARD_SIZE 10
+#define NUMBER_OF_SHIPS 8
+
 #endif //SERVER_CONFIG_H

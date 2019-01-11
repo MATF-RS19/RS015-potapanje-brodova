@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include "ServerCommunicator.h"
 #include <QImage>
+#include "config.h"
 
 BattleshipGame::BattleshipGame(QWidget *parent)
 {
@@ -35,12 +36,34 @@ void BattleshipGame::start(){
     player2->setName("player2");
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
 
-    player2->cellboard->setPlayerName(player2->getName());
-    player2->setBoardX(700);
-    player2->setBoardY(350);
-    player2->cellboard->placeBoard(700,350,10,10);
-    srand(time(NULL));
-    setWhoseTurn(player1->getName());
+    try {
+        string ships;
+        for (int i = 0; i < BOARD_SIZE; i++)
+            for (int j = 0; j < BOARD_SIZE; j++)
+                if (player1->board[i][j])
+                    ships += to_string(i) + "," + to_string(j) + ",";
+
+        // TODO obrisati
+        ships += to_string(0) + "," + to_string(0) + ",";
+        ships += to_string(0) + "," + to_string(1) + ",";
+        ships += to_string(0) + "," + to_string(2) + ",";
+
+        string gameId = interface.createGame(
+            player1->getName().toStdString(),
+            player1->getSecret().toStdString(),
+            ships
+        );
+        cout << "Created game ID: " << gameId << endl;
+
+        player2->cellboard->setPlayerName(player2->getName());
+        player2->setBoardX(700);
+        player2->setBoardY(350);
+        player2->cellboard->placeBoard(700,350,10,10);
+        srand(time(NULL));
+        setWhoseTurn(player1->getName());
+    } catch (string const err) {
+        cerr << err << endl;
+    }
 
 // sinhronizacija grafickih polja sa board poljem u playeru ( dodati atribut name u cellBoard radi sinhronizacije)
 
