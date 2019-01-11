@@ -52,16 +52,41 @@ void Player::takeTurn(Player* enemy,int x, int y,QString player){
 
     std::cout << "polje" << x << " " << y << "gadja :" << game->getWhoseTurn().toStdString() << std::endl;
 
+    QGraphicsPixmapItem* p = new QGraphicsPixmapItem();
 
     if(enemy->board[x][y]==1){
         std::cout << "pogodak" << std::endl;
+        p->setPixmap(QPixmap(":/images/images/fire.png"));
+        p->setPos(enemy->getBoardX() + y*38,enemy->getBoardY() + x*38);
         enemy->board[x][y]=3;
         game->setWhoseTurn(enemy->getName());
     }
     else {
             std::cout << "promasaj" << std::endl;
+            p->setPixmap(QPixmap(":/images/images/splash.png"));
+            p->setPos(enemy->getBoardX() + y*38,enemy->getBoardY() + x*38);
+
             enemy->board[x][y]=2;
             game->setWhoseTurn(enemy->getName());
     }
+
+    p->show();
+    game->scene->addItem(p);
+
 }
 
+void Player::setBoardX(int x){
+    this->boardx=x;
+}
+
+void Player::setBoardY(int y){
+    this->boardy=y;
+}
+
+int Player::getBoardX(){
+    return this->boardx;
+}
+
+int Player::getBoardY(){
+    return this->boardy;
+}

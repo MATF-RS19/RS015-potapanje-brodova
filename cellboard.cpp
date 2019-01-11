@@ -4,7 +4,8 @@
 
 /*posto sam definisao kvadrat da bude duzine 20, mora da bude veci razmak od toga posto se racuna
 gornjeg levog coska kvadrata */
-#define SPACE 23
+
+#define SPACE 38
 
 extern BattleshipGame* game;
 
@@ -32,6 +33,10 @@ void cellBoard::createColumn(int x,int y,int numOfrows,int curr_i){
         Cell* cell = new Cell();
         cell->setPlayerName(this->getPlayerName());
         cell->setPos(x,y+SPACE*i);
+        QBrush brush;
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(Qt::white);
+        cell->setBrush(brush);
 
         cell->setIsPlaced(true);
         cell->setCoords(i,curr_i);

@@ -6,28 +6,39 @@
 #include <QGraphicsProxyWidget>
 #include <QLineEdit>
 #include "ServerCommunicator.h"
+#include <QImage>
 
 BattleshipGame::BattleshipGame(QWidget *parent)
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setFixedSize(800,800);
+    setFixedSize(1200,800);
 
     scene = new QGraphicsScene();
 
-    scene->setSceneRect(0,0,800,800);
+    scene->setSceneRect(0,0,1200,800);
+
+    //ni pozadina ne radi dobro, kao da ne uzima sliku kako treba
+
+    QImage bg(":/images/images/bg.jpeg");
+    std::cout << "background is " << bg.isNull() << std::endl;
+    QBrush brush(bg);
+    scene->setBackgroundBrush(brush);
 
     setScene(scene);
 }
 
 void BattleshipGame::start(){
     setFinishedPlacing(true);
+    lockButton->hide();
     player2 = new Player();
     player2->setName("player2");
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
 
     player2->cellboard->setPlayerName(player2->getName());
-    player2->cellboard->placeBoard(400,350,10,10);
+    player2->setBoardX(700);
+    player2->setBoardY(350);
+    player2->cellboard->placeBoard(700,350,10,10);
     srand(time(NULL));
     setWhoseTurn(player1->getName());
 
@@ -95,6 +106,8 @@ void BattleshipGame::lock(){
         player1->setName(name);
         player1->setSecret(QString::fromStdString(secret));
         player1->cellboard->setPlayerName(player1->getName());
+        player1->setBoardX(100);
+        player1->setBoardY(350);
 
         playButton->hide();
         scene->clear();

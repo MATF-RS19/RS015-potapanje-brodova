@@ -21,11 +21,17 @@ public:
     void setSecret(QString secret);
     cellBoard* cellboard;
     int shipsPlaced;
+    void setBoardX(int);
+    void setBoardY(int);
+    int getBoardX();
+    int getBoardY();
 
 
 private:
     QString name;
     QString secret;
+    int boardx;
+    int boardy;
 };
 
 #endif // PLAYER_H

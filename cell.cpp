@@ -3,11 +3,12 @@
 #include <QPointF>
 #include "battleshipgame.h"
 #include <string>
+#include <QGraphicsPixmapItem>
 
 extern BattleshipGame* game;
 
 Cell::Cell(QGraphicsItem* parent){
-    QRect c=QRect(QPoint(0,0),QPoint(20,20));
+    QRect c=QRect(QPoint(0,0),QPoint(35,35));
     QRectF cell(c);
 
     setRect(cell);
@@ -33,6 +34,7 @@ int Cell::getY(){
 }
 
 void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
+    QGraphicsPixmapItem* p = new QGraphicsPixmapItem();
     if(event->button()==Qt::LeftButton){
         if(game->getFinishedPlacing()){
             if(game->getWhoseTurn()== game->player1->getName())
@@ -59,16 +61,21 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
                 }
                 game->player1->board[this->getX()][this->getY()] = 1;
                 game->player1->shipsPlaced += 1;
+
+                this->setOpacity(0.5);
+
+                //ne izbacuje sliku????
+                QPixmap map(":/images/images/ship.png");
+                std::cout << "pixmap is " << map.height() << std::endl;
+                p->setPixmap(map);
+                p->setPos(100 + 38*this->getY(), 350 + 38*this->getX());
+                p->show();
+                game->scene->addItem(p);
+
                 if(game->player1->shipsPlaced == 5){
                     game->lockButton->setEnabled(true);
                 }
                 std::cout << "ship placed at : " << this->getX() << "," << this->getY() << ". Placed " << game->player1->shipsPlaced << " ships" << std::endl;
-                for(int i=0;i<10;i++){
-                    for(int j =0;j<10;j++)
-                        std::cout << game->player1->board[i][j] << " ";
-                    std::cout << std::endl;
-                }
-
             }
         }
     }
@@ -82,12 +89,9 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
             if(game->player1->board[this->getX()][this->getY()] == 1){
                 game->player1->board[this->getX()][this->getY()] = 0;
                 game->player1->shipsPlaced--;
+                this->setOpacity(1);
+                delete(p);
                 std::cout << "removed ship at : " << this->getX() << "," << this->getY() << " Placed" << game->player1->shipsPlaced << "ships" << std::endl;
-                for(int i=0;i<10;i++){
-                    for(int j =0;j<10;j++)
-                        std::cout << game->player1->board[i][j] << " ";
-                    std::cout << std::endl;
-                }
                 game->lockButton->setEnabled(false);
 
             }

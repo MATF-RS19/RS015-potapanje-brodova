@@ -57,3 +57,6 @@ LIBS += -L/usr/local/opt/cpprestsdk/lib/
 LIBS += -L/usr/local/opt/boost/lib/
 macx: LIBS += -lboost_thread-mt
 unix:!macx|win: LIBS += -lboost_thread
+
+RESOURCES += \
+    images.qrc
