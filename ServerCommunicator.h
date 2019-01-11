@@ -6,6 +6,7 @@
 #define SERVER_SERVERCOMMUNICATOR_H
 
 #include <string>
+#include <vector>
 #include <cpprest/http_client.h>
 
 using namespace std;
@@ -21,6 +22,7 @@ public:
     string joinGame(string username, string secret, string ships, string gameId);
     string getGameState(string username, string secret, string gameId);
     string playTurn(string username, string secret, string gameId, int turn_x, int turn_y);
+    vector<string> getOpenGames();
 };
 
 

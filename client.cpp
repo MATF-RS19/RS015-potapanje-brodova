@@ -19,6 +19,11 @@ int main() {
         string secret2 = interface.registerUser("stefan");
         cout << "Secret: " << secret1 << endl;
 
+        cout << "Getting open games" << endl;
+        vector<string> games = interface.getOpenGames();
+        for (auto game : games)
+            cout << "- " << game << endl;
+
         cout << "Joining game" << endl;
         string resp = interface.joinGame("stefan", secret2, gameId, "0,0,1,1,2,2,3,4,4,4,5,5,6,6,7,7");
         cout << resp << endl;
