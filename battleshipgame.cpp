@@ -106,7 +106,7 @@ void BattleshipGame::displayMenu(){
     int bx=100;
     int by=250;
     playButton->setGeometry(bx,by,50,25);
-    connect(playButton,SIGNAL(clicked()),this,SLOT(lock()));
+    connect(playButton,SIGNAL(clicked()),this,SLOT(lobby()));
     playButton->show();
     playButton->setEnabled(false);
 
@@ -118,7 +118,7 @@ void BattleshipGame::displayMenu(){
 }
 
 
-void BattleshipGame::lock(){
+void BattleshipGame::lobby(){
     try {
         QString name = textName->text();
 
@@ -135,6 +135,34 @@ void BattleshipGame::lock(){
         playButton->hide();
         scene->clear();
 
+        createButton = new QPushButton("CREATE",this);
+        int bx=700;
+        int by=250;
+        createButton->setGeometry(bx,by,50,25);
+        connect(createButton,SIGNAL(clicked()),this,SLOT(lock()));
+        createButton->show();
+        createButton->setEnabled(true);
+
+        panel = new QGraphicsRectItem(100,100,500,300);
+        QBrush brush;
+        brush.setStyle(Qt::SolidPattern);
+        brush.setColor(Qt::white);
+        panel->setBrush(brush);
+        panel->setOpacity(1);
+        scene->addItem(panel);
+
+        } catch (string const err) {
+        cerr << err << endl;
+        }
+
+
+}
+
+
+void BattleshipGame::lock(){
+    try {
+        scene->clear();
+        createButton->hide();
         player1->cellboard->placeBoard(100,350,10,10);
 
         lockButton = new QPushButton("LOCK",this);

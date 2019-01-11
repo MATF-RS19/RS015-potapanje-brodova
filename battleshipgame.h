@@ -29,7 +29,9 @@ public:
     void displayMenu();
     QPushButton* playButton;
     QPushButton* lockButton;
+    QPushButton* createButton;
     QLineEdit* textName;
+    QGraphicsRectItem* panel;
 
 
 
@@ -38,6 +40,7 @@ public slots:
     void start();
     void editText();
     void lock();
+    void lobby();
 
 private:
     QString whoseTurn;
