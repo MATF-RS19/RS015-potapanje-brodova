@@ -7,7 +7,6 @@ set(GENERAL_SOURCE_FILES Server/GameManager.cpp Server/GameManager.h Server/User
 set(SERVER_SOURCE_FILES Server/BattleshipServer.cpp Server/BattleshipServer.h)
 set(MAIN_SOURCE_FILES Server/main.cpp ${GENERAL_SOURCE_FILES} ${SERVER_SOURCE_FILES})
 add_executable(WebServer ${MAIN_SOURCE_FILES})
-add_executable(Server ${GENERAL_SOURCE_FILES} ${SERVER_SOURCE_FILES})
 
 set(CLIENT_SOURCE_FILES client.cpp ServerCommunicator.cpp ServerCommunicator.h config.h)
 add_executable(ClientTest ${CLIENT_SOURCE_FILES})

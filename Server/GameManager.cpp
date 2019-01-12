@@ -97,24 +97,38 @@ string GameManager::getGameState(string username, string secret, std::string gam
     if (*user != *(game->getCreator()) && *user != *(game->getChallenger()))
         throw "Not authorized to see game";
 
+    bool isCreator = *user == *(game->getCreator());
+
     string response;
-    if (*user == *(game->getCreator())) {
+
+    if (isCreator) {
         response += Game::printBoard(game->getCreatorBoard());
         response += "\n";
         response += Game::printBoard(Game::cleanOpponentBoard(game->getChallengerBoard()));
         response += "\n";
-        response += ((game->getTurn() == CREATOR) ? "Your turn" : "Waiting turn");
+        response += ((game->getTurn() == CREATOR) ? game->getCreator() : game->getChallenger())->getName();
     } else {
         response += Game::printBoard(game->getChallengerBoard());
         response += "\n";
         response += Game::printBoard(Game::cleanOpponentBoard(game->getCreatorBoard()));
         response += "\n";
-        response += ((game->getTurn() == CHALLENGER) ? "Your turn" : "Waiting turn");
+        response += ((game->getTurn() == CHALLENGER) ? game->getChallenger() : game->getCreator())->getName();
     }
 
     response += "\n";
-    response += "Game state: ";
-    response += game->getState() == PLAYING ? "Game ongoing" : "Game finished";
+    if (game->getState() == OPEN)
+        response += "open";
+    else if (game->getState() == PLAYING)
+        response += "playing";
+    else if (game->getState() == CREATOR_WON)
+        response += isCreator ? "won" : "lost";
+    else if (game->getState() == CHALLENGER_WON)
+        response += isCreator ? "lost" : "won";
+
+    response += "\n";
+    response += (game->getState() == OPEN)
+            ? "\n"
+            : (isCreator ? game->getChallenger() : game->getCreator())->getName();
 
     return response;
 }

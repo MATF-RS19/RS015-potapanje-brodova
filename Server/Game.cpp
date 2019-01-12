@@ -17,6 +17,7 @@ Game::Game(User *_creator, vector<int> coords) {
 
     for (int i = 0; i < BOARD_SIZE; i++) {
         creatorBoard[i].fill(EMPTY);
+        challengerBoard[i].fill(EMPTY);
     }
 
     for (int i = 0; i < NUMBER_OF_SHIPS; i++) {
