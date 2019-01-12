@@ -244,6 +244,7 @@ void BattleshipGame::lock(){
     try {
         scene->clear();
         createButton->hide();
+        refreshButton->hide();
         player1->cellboard->placeBoard(player1->getBoardX(),player1->getBoardY(),BOARD_SIZE,BOARD_SIZE);
 
         int bx=100;
