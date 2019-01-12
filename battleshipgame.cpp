@@ -169,6 +169,8 @@ void BattleshipGame::lobby(){
 
 void BattleshipGame::lock(){
     try {
+//        auto _scene = new QGraphicsScene();
+//        setScene(_scene);
         scene->clear();
         createButton->hide();
         player1->cellboard->placeBoard(100,350,10,10);

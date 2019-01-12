@@ -12,7 +12,6 @@ int main(int argc, char *argv[])
     game=new BattleshipGame();
     game->show();
 
-
     game->displayMenu();
 
     return a.exec();
