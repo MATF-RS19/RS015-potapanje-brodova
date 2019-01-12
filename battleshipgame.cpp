@@ -135,9 +135,15 @@ void BattleshipGame::lobby(){
     try {
         if(!isPlayerCreated){
             QString name = textName->text();
+            string _name = name.toStdString();
+            _name.erase(std::remove_if(_name.begin(), _name.end(), [](char c) { return !std::isalnum(c); }), _name.end());
+            name = QString::fromStdString(_name);
+            cout << _name << endl;
+
+            if (_name == "") return false;
 
             string secret = interface.registerUser(name.toStdString());
-            cout <<"secret:" <<secret << endl;
+            cout << "secret: " << secret << endl;
 
             createPlayer(name,secret);
         }
