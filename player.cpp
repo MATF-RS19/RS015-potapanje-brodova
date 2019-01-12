@@ -12,6 +12,7 @@ Player::Player()
         }
     }
     cellboard = new cellBoard();
+    enemyCellBoard = new cellBoard();
     shipsPlaced=0;
 }
 
@@ -41,13 +42,17 @@ bool Player::isHit(int x,int y){
 }
 
 
-void Player::takeTurn(Player* enemy,int x, int y,QString player){
+void Player::takeTurn(int x, int y,QString player){
 
-    if(enemy->getName() != player){
+    if(game->getWhoseTurn() != this->getName()){
         return;
     }
 
-    if(enemy->board[x][y] ==2 || enemy->board[x][y] == 3){
+    if(this->getEnemyName() != player){
+        return;
+    }
+
+    if(this->enemyBoard[x][y] ==2 || this->enemyBoard[x][y] == 3){
         return;
     }
 
@@ -55,20 +60,20 @@ void Player::takeTurn(Player* enemy,int x, int y,QString player){
 
     QGraphicsPixmapItem* p = new QGraphicsPixmapItem();
 
-    if(enemy->board[x][y]==1){
+    if(this->enemyBoard[x][y]==1){
         std::cout << "pogodak" << std::endl;
         p->setPixmap(QPixmap(":/images/images/fire.png"));
-        p->setPos(enemy->getBoardX() + y*38,enemy->getBoardY() + x*38);
-        enemy->board[x][y]=3;
-        game->setWhoseTurn(enemy->getName());
+        p->setPos(this->getBoardXE() + y*38,this->getBoardYE() + x*38);
+        this->enemyBoard[x][y]=3;
+        game->setWhoseTurn(this->getEnemyName());
     }
     else {
             std::cout << "promasaj" << std::endl;
             p->setPixmap(QPixmap(":/images/images/splash.png"));
-            p->setPos(enemy->getBoardX() + y*38,enemy->getBoardY() + x*38);
+            p->setPos(this->getBoardXE() + y*38,this->getBoardYE() + x*38);
 
-            enemy->board[x][y]=2;
-            game->setWhoseTurn(enemy->getName());
+            this->enemyBoard[x][y]=2;
+            game->setWhoseTurn(this->getEnemyName());
     }
 
     p->show();
@@ -91,3 +96,25 @@ int Player::getBoardX(){
 int Player::getBoardY(){
     return this->boardy;
 }
+
+QString Player::getEnemyName(){
+    return this->enemyName;
+}
+
+void Player::setEnemyName(QString name){
+    this->enemyName = name;
+}
+
+void Player::setBoardXE(int xe){
+    this->boardxe=xe;
+}
+void Player::setBoardYE(int ye){
+    this->boardye=ye;
+}
+int Player::getBoardXE(){
+    return this->boardxe;
+}
+int Player::getBoardYE(){
+    return this->boardye;
+}
+

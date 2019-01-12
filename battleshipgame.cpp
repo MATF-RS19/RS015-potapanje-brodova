@@ -33,8 +33,6 @@ BattleshipGame::BattleshipGame(QWidget *parent)
 void BattleshipGame::start(){
     setFinishedPlacing(true);
     lockButton->hide();
-    player2 = new Player();
-    player2->setName("player2");
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
 
     try {
@@ -44,12 +42,23 @@ void BattleshipGame::start(){
                 if (player1->board[i][j])
                     ships += to_string(i) + "," + to_string(j) + ",";
 
-        // TODO obrisati
+        string gameId = interface.createGame(
+                    player1->getName().toStdString(),
+                    player1->getSecret().toStdString(),
+                    ships
+                );
+                cout << "Created game ID: " << gameId << endl;
 
-        player2->cellboard->setPlayerName(player2->getName());
-        player2->setBoardX(700);
-        player2->setBoardY(350);
-        player2->cellboard->placeBoard(700,350,10,10);
+
+        player1->setEnemyName(QString("enemy"));
+        std::cout<< "enemy name = " << player1->getEnemyName().toStdString() << std::endl;
+
+        player1->enemyCellBoard->setPlayerName(player1->getEnemyName());
+        player1->setBoardXE(700);
+        player1->setBoardYE(350);
+        player1->enemyCellBoard->placeBoard(player1->getBoardXE(),player1->getBoardYE(),BOARD_SIZE,BOARD_SIZE);
+
+
         srand(time(NULL));
         setWhoseTurn(player1->getName());
     } catch (string const err) {
@@ -169,11 +178,9 @@ void BattleshipGame::lobby(){
 
 void BattleshipGame::lock(){
     try {
-//        auto _scene = new QGraphicsScene();
-//        setScene(_scene);
         scene->clear();
         createButton->hide();
-        player1->cellboard->placeBoard(100,350,10,10);
+        player1->cellboard->placeBoard(player1->getBoardX(),player1->getBoardY(),BOARD_SIZE,BOARD_SIZE);
 
         lockButton = new QPushButton("LOCK",this);
         int bx=100;

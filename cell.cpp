@@ -40,13 +40,13 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
         if(game->getFinishedPlacing()){
             if(game->getWhoseTurn()== game->player1->getName())
             {
-                game->player1->takeTurn(game->player2,this->getX(),this->getY(),this->getPlayerName());
+                game->player1->takeTurn(this->getX(),this->getY(),this->getPlayerName());
             }
 
 
             else
             {
-                game->player2->takeTurn(game->player1,this->getX(),this->getY(),this->getPlayerName());
+                game->player1->takeTurn(this->getX(),this->getY(),this->getPlayerName());
             }
         }
         else{
