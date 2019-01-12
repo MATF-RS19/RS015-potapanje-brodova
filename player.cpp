@@ -12,11 +12,7 @@ Player::Player() {
             this->board[i][j]=0;
         }
     }
-    cellboard = new cellBoard();
-    enemyCellBoard = new cellBoard();
     shipsPlaced=0;
-    numOfSunk=0;
-    numOfEnemySunk=0;
 }
 
 void Player::setName(QString name){
@@ -49,7 +45,7 @@ void Player::pollGameState() {
                         secret.toStdString(),
                         gameID
                 );
-//                cout << response << endl << endl;
+         //       cout << response << endl << endl;
                 istringstream newState{response};
                 for (int i = 0; i < BOARD_SIZE; i++) {
                     for (int j = 0; j < BOARD_SIZE; j++) {

@@ -26,6 +26,22 @@ BattleshipGame::BattleshipGame(QWidget *parent)
     QImage bg(":/images/images/bg.jpeg");
     QBrush brush(bg);
     scene->setBackgroundBrush(brush);
+    playButton = new QPushButton("PLAY",this);
+    playButton->hide();
+    basicTurnText = new QLabel("Finding an opponent", this);
+    basicTurnText->hide();
+    textName = new QLineEdit;
+    createButton = new QPushButton("CREATE",this);
+    createButton->hide();
+    lockButton = new QPushButton("LOCK",this);
+    lockButton->hide();
+    returnToLobby = new QPushButton("LOBBY",this);
+    returnToLobby->hide();
+
+
+
+
+
 
     setScene(scene);
 }
@@ -34,7 +50,6 @@ void BattleshipGame::start(){
     setFinishedPlacing(true);
     lockButton->hide();
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
-    basicTurnText = new QLabel("Finding an opponent", this);
     basicTurnText->setAlignment(Qt::AlignCenter);
     basicTurnText->setGeometry(0, 300, 1200, 30);
     basicTurnText->show();
@@ -115,7 +130,6 @@ void BattleshipGame::displayMenu(){
     title->setPos(tx,ty);
     scene->addItem(title);
 
-    playButton = new QPushButton("PLAY",this);
     int bx=100;
     int by=250;
     playButton->setGeometry(bx,by,50,25);
@@ -123,7 +137,6 @@ void BattleshipGame::displayMenu(){
     playButton->show();
     playButton->setEnabled(false);
 
-    textName = new QLineEdit;
     textName->setPlaceholderText("Enter your name");
     textName->setFocus();
     scene->addWidget(textName);
@@ -150,11 +163,29 @@ void BattleshipGame::lobby(){
         if(!playButton->isHidden()){
             playButton->hide();
         }
+        if(!returnToLobby->isHidden()){
+            returnToLobby->hide();
+        }
+        if(!basicTurnText->isHidden()){
+            basicTurnText->hide();
+        }
         scene->clear();
 
-        setFinishedPlacing(false);
+        player1->cellboard = new cellBoard();
+        player1->enemyCellBoard = new cellBoard();
+        player1->cellboard->setPlayerName(player1->getName());
+        player1->setBoardX(100);
+        player1->setBoardY(350);
+        player1->WinnerStatus="";
 
-        createButton = new QPushButton("CREATE",this);
+        setFinishedPlacing(false);
+        for(int i=0;i<BOARD_SIZE;i++){
+            for(int j=0;j<BOARD_SIZE;j++){
+                player1->board[i][j]=0;
+            }
+        }
+        player1->shipsPlaced=0;
+
         int bx=700;
         int by=250;
         createButton->setGeometry(bx,by,50,25);
@@ -196,7 +227,6 @@ void BattleshipGame::lock(){
         createButton->hide();
         player1->cellboard->placeBoard(player1->getBoardX(),player1->getBoardY(),BOARD_SIZE,BOARD_SIZE);
 
-        lockButton = new QPushButton("LOCK",this);
         int bx=100;
         int by=250;
         lockButton->setGeometry(bx,by,50,25);
@@ -228,7 +258,6 @@ void BattleshipGame::endGame(){
         basicTurnText->setText(QString("Sorry to inform you, you lost"));
     }
 
-    returnToLobby = new QPushButton("LOBBY",this);
     int bx=200;
     int by=250;
     returnToLobby->setGeometry(bx,by,70,35);
@@ -244,9 +273,7 @@ void BattleshipGame::createPlayer(QString name,string secret){
     player1 = new Player();
     player1->setName(name);
     player1->setSecret(QString::fromStdString(secret));
-    player1->cellboard->setPlayerName(player1->getName());
-    player1->setBoardX(100);
-    player1->setBoardY(350);
     isPlayerCreated=true;
     cout << isPlayerCreated << endl;
+
 }
