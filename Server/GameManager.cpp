@@ -106,7 +106,9 @@ string GameManager::getGameState(string username, string secret, std::string gam
         response += "\n";
         response += Game::printBoard(Game::cleanOpponentBoard(game->getChallengerBoard()));
         response += "\n";
-        response += ((game->getTurn() == CREATOR) ? game->getCreator() : game->getChallenger())->getName();
+        response += game->getState() == OPEN
+                ? "enemy"
+                : ((game->getTurn() == CREATOR) ? game->getCreator() : game->getChallenger())->getName();
     } else {
         response += Game::printBoard(game->getChallengerBoard());
         response += "\n";

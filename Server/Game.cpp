@@ -10,6 +10,7 @@ using namespace std;
 
 Game::Game(User *_creator, vector<int> coords) {
     creator = _creator;
+    challenger = _creator;
     if (coords.size() != 2 * NUMBER_OF_SHIPS)
         throw "8 ship coordinates required";
 
