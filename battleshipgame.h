@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QGraphicsTextItem>
 #include <QPushButton>
 #include <QLineEdit>
 #include "cellboard.h"
@@ -24,21 +25,26 @@ public:
     BattleshipGame(QWidget* parent=NULL);
 
     Player* player1;
-    Player* player2;
     std::vector<string> games;
 
     QString getWhoseTurn(void);
     void setWhoseTurn(QString);
     bool getFinishedPlacing();
     void setFinishedPlacing(bool b);
+    void createPlayer(QString name,string secret);
 
     void displayMenu();
+    void endGame();
+    bool isPlayerCreated = false;
+    string gameState;
 
     QGraphicsScene* scene;
     QPushButton* playButton;
     QPushButton* lockButton;
     QPushButton* createButton;
+    QPushButton* returnToLobby;
     QLineEdit* textName;
+    QGraphicsSimpleTextItem* basicTurnText;
 
 public slots:
     void start();

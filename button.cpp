@@ -2,6 +2,7 @@
 #include <QBrush>
 #include <player.h>
 #include <battleshipgame.h>
+#include "config.h"
 
 extern BattleshipGame* game;
 

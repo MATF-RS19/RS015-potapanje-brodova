@@ -72,9 +72,25 @@ void Player::pollGameState() {
                 string turn;
                 newState >> turn;
                 game->setWhoseTurn(QString::fromStdString(turn));
+                cout << "turn : " << turn << endl;
                 string state;
                 newState >> state;
+          /*      if(state == "playing" && game->getWhoseTurn()=="enemy"){
+                    QMetaObject::invokeMethod(game->basicTurnText,"setText",Q_ARG(QString,"Enemy Turn"))
+                }
+                if(state == "playing" && game -> getWhoseTurn()!= "enemy"){
+                    QMetaObject::invokeMethod(game->basicTurnText,"setText",Q_ARG(QString,"Your Turn"))
+                }
+            */
                 cout << "Game state: " << state << endl;
+                if(state == "won"){
+                    this->WinnerStatus = "won";
+                    this->gameID = "";
+                }
+                if(state == "lost"){
+                    this->WinnerStatus = "lost";
+                    this->gameID = "";
+                }
                 string enemyName;
                 newState >> enemyName;
                 cout << "Enemy name: " << enemyName << endl;
@@ -84,7 +100,10 @@ void Player::pollGameState() {
             usleep(1000000); // mikrosekunde
         }
         cout << "Stopped polling game state" << endl;
+        //game->endGame();
     }).detach();
+
+
 }
 
 bool Player::isHit(int x,int y){

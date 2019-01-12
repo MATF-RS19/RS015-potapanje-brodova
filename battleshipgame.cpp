@@ -34,7 +34,9 @@ void BattleshipGame::start(){
     setFinishedPlacing(true);
     lockButton->hide();
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
-
+    basicTurnText = new QGraphicsSimpleTextItem(QString("Finding an opponent"));
+    basicTurnText->setPos(450,350);
+    scene->addItem(basicTurnText);
     try {
         string ships;
         for (int i = 0; i < BOARD_SIZE; i++)
@@ -130,20 +132,20 @@ void BattleshipGame::displayMenu(){
 
 void BattleshipGame::lobby(){
     try {
-        QString name = textName->text();
+        if(!isPlayerCreated){
+            QString name = textName->text();
 
-        string secret = interface.registerUser(name.toStdString());
-        cout <<"secret:" <<secret << endl;
+            string secret = interface.registerUser(name.toStdString());
+            cout <<"secret:" <<secret << endl;
 
-        player1 = new Player();
-        player1->setName(name);
-        player1->setSecret(QString::fromStdString(secret));
-        player1->cellboard->setPlayerName(player1->getName());
-        player1->setBoardX(100);
-        player1->setBoardY(350);
-
-        playButton->hide();
+            createPlayer(name,secret);
+        }
+        if(!playButton->isHidden()){
+            playButton->hide();
+        }
         scene->clear();
+
+        setFinishedPlacing(false);
 
         createButton = new QPushButton("CREATE",this);
         int bx=700;
@@ -206,4 +208,47 @@ void BattleshipGame::editText(){
         playButton->setEnabled(true);
     else
         playButton->setEnabled(false);
+}
+
+
+void BattleshipGame::endGame(){
+    //congradulations, you win or you lose
+    scene->clear();
+    QGraphicsTextItem* endMsg;
+    if(player1->WinnerStatus == "Won"){
+        endMsg = new QGraphicsTextItem(QString("Congradulations, you won!!"));
+        int mx=scene->width()/2 - endMsg->boundingRect().width()/2;
+        int my=scene->height()/2 - endMsg->boundingRect().height()/2;
+        endMsg->setPos(mx,my);
+        scene->addItem(endMsg);
+    }
+    else{
+        endMsg = new QGraphicsTextItem(QString("Sorry to inform you, you lost"));
+        int mx=scene->width()/2 - endMsg->boundingRect().width()/2;
+        int my=scene->height()/2 - endMsg->boundingRect().height()/2;
+        endMsg->setPos(mx,my);
+        scene->addItem(endMsg);
+    }
+
+    returnToLobby = new QPushButton("LOBBY",this);
+    int bx=200;
+    int by=250;
+    returnToLobby->setGeometry(bx,by,70,35);
+    connect(returnToLobby,SIGNAL(clicked()),this,SLOT(lobby()));
+    returnToLobby->show();
+    returnToLobby->setEnabled(true);
+
+}
+
+
+void BattleshipGame::createPlayer(QString name,string secret){
+
+    player1 = new Player();
+    player1->setName(name);
+    player1->setSecret(QString::fromStdString(secret));
+    player1->cellboard->setPlayerName(player1->getName());
+    player1->setBoardX(100);
+    player1->setBoardY(350);
+    isPlayerCreated=true;
+    cout << isPlayerCreated << endl;
 }

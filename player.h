@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cellboard.h>
 #include "ServerCommunicator.h"
+#include "config.h"
 
 class Player {
 private:
@@ -23,8 +24,8 @@ private:
 public:
     Player();
     std::string gameID = "";
-    int board[10][10];
-    int enemyBoard[10][10];
+    int board[BOARD_SIZE][BOARD_SIZE];
+    int enemyBoard[BOARD_SIZE][BOARD_SIZE];
     int shipsPlaced;
     int numOfSunk;
     int numOfEnemySunk;
@@ -33,6 +34,8 @@ public:
 
     void initGame(string);
     void pollGameState();
+
+
     bool isHit(int,int); // todo delete
     bool hasLost();
     void setName(QString);
@@ -51,6 +54,7 @@ public:
 
     QString getEnemyName();
     void setEnemyName(QString name);
+    string WinnerStatus;
 };
 
 #endif // PLAYER_H

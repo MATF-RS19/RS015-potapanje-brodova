@@ -1,6 +1,7 @@
 #include "cellboard.h"
 #include <QBrush>
 #include "battleshipgame.h"
+#include "config.h"
 
 /*posto sam definisao kvadrat da bude duzine 20, mora da bude veci razmak od toga posto se racuna
 gornjeg levog coska kvadrata */
