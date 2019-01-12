@@ -83,8 +83,7 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
                 game->player1->board[this->getX()][this->getY()] = 0;
                 game->player1->shipsPlaced--;
                 this->setOpacity(1);
-                game->scene->removeItem(p);
-                delete p;
+                setState(0);
                 std::cout << "removed ship at : " << this->getX() << "," << this->getY() << " Placed" << game->player1->shipsPlaced << "ships" << std::endl;
                 game->lockButton->setEnabled(false);
 
