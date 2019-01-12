@@ -34,9 +34,10 @@ void BattleshipGame::start(){
     setFinishedPlacing(true);
     lockButton->hide();
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
-    basicTurnText = new QGraphicsSimpleTextItem(QString("Finding an opponent"));
-    basicTurnText->setPos(450,350);
-    scene->addItem(basicTurnText);
+    basicTurnText = new QLabel("Finding an opponent", this);
+    basicTurnText->setAlignment(Qt::AlignCenter);
+    basicTurnText->setGeometry(0, 300, 1200, 30);
+    basicTurnText->show();
     try {
         string ships;
         for (int i = 0; i < BOARD_SIZE; i++)

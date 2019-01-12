@@ -8,6 +8,7 @@
 #include <QGraphicsTextItem>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QLabel>
 #include "cellboard.h"
 #include "player.h"
 #include "ServerCommunicator.h"
@@ -44,7 +45,7 @@ public:
     QPushButton* createButton;
     QPushButton* returnToLobby;
     QLineEdit* textName;
-    QGraphicsSimpleTextItem* basicTurnText;
+    QLabel* basicTurnText;
 
 public slots:
     void start();

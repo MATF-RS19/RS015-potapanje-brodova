@@ -49,7 +49,7 @@ void Player::pollGameState() {
                         secret.toStdString(),
                         gameID
                 );
-                cout << response << endl << endl;
+//                cout << response << endl << endl;
                 istringstream newState{response};
                 for (int i = 0; i < BOARD_SIZE; i++) {
                     for (int j = 0; j < BOARD_SIZE; j++) {
@@ -75,13 +75,14 @@ void Player::pollGameState() {
                 cout << "turn : " << turn << endl;
                 string state;
                 newState >> state;
-          /*      if(state == "playing" && game->getWhoseTurn()=="enemy"){
-                    QMetaObject::invokeMethod(game->basicTurnText,"setText",Q_ARG(QString,"Enemy Turn"))
+
+                if(state == "playing" && game->getWhoseTurn()=="enemy"){
+                    game->basicTurnText->setText("Enemy Turn");
                 }
                 if(state == "playing" && game -> getWhoseTurn()!= "enemy"){
-                    QMetaObject::invokeMethod(game->basicTurnText,"setText",Q_ARG(QString,"Your Turn"))
+                    game->basicTurnText->setText("Your Turn");
                 }
-            */
+
                 cout << "Game state: " << state << endl;
                 if(state == "won"){
                     this->WinnerStatus = "won";
