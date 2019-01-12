@@ -32,9 +32,11 @@ public:
     void setBoardYE(int);
     int getBoardXE();
     int getBoardYE();
+    int numOfSunk;
+    int numOfEnemySunk;
 
 
-    std::string gameID;
+    std::string gameID = "";
 
     QString  getEnemyName();
     void setEnemyName(QString name);

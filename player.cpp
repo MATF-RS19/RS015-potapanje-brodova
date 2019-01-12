@@ -14,6 +14,8 @@ Player::Player()
     cellboard = new cellBoard();
     enemyCellBoard = new cellBoard();
     shipsPlaced=0;
+    numOfSunk=0;
+    numOfEnemySunk=0;
 }
 
 void Player::setName(QString name){
@@ -65,6 +67,10 @@ void Player::takeTurn(int x, int y,QString player){
         p->setPixmap(QPixmap(":/images/images/fire.png"));
         p->setPos(this->getBoardXE() + y*38,this->getBoardYE() + x*38);
         this->enemyBoard[x][y]=3;
+        numOfEnemySunk++;
+        if(numOfEnemySunk == 8){
+            //game over, you win;
+        }
         game->setWhoseTurn(this->getEnemyName());
     }
     else {

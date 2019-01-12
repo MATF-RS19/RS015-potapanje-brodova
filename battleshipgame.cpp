@@ -41,13 +41,23 @@ void BattleshipGame::start(){
             for (int j = 0; j < BOARD_SIZE; j++)
                 if (player1->board[i][j])
                     ships += to_string(i) + "," + to_string(j) + ",";
-
-        string gameId = interface.createGame(
-                    player1->getName().toStdString(),
-                    player1->getSecret().toStdString(),
+        if(player1->gameID == ""){
+            string gameId = interface.createGame(
+                        player1->getName().toStdString(),
+                        player1->getSecret().toStdString(),
                     ships
-                );
-                cout << "Created game ID: " << gameId << endl;
+                    );
+                    cout << "Created game ID: " << gameId << endl;
+         }
+        else{
+            string str = interface.joinGame(
+                        player1->getName().toStdString(),
+                        player1->getSecret().toStdString(),
+                        player1->gameID,
+                        ships
+                        );
+            setWhoseTurn(player1->getName());
+        }
 
 
         player1->setEnemyName(QString("enemy"));
@@ -60,7 +70,6 @@ void BattleshipGame::start(){
 
 
         srand(time(NULL));
-        setWhoseTurn(player1->getName());
     } catch (string const err) {
         cerr << err << endl;
     }
@@ -171,8 +180,6 @@ void BattleshipGame::lobby(){
         } catch (string const err) {
         cerr << err << endl;
         }
-
-
 }
 
 
