@@ -1,10 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <string>
+
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <iostream>
-#include <string>
 #include <cellboard.h>
 
 class Player
@@ -25,6 +26,8 @@ public:
     void setBoardY(int);
     int getBoardX();
     int getBoardY();
+
+    std::string gameID;
 
 
 private:

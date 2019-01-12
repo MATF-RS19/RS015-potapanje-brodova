@@ -30,8 +30,8 @@ public:
     QPushButton* playButton;
     QPushButton* lockButton;
     QPushButton* createButton;
-    vector<QPushButton*> joinButtons;
     QLineEdit* textName;
+    std::vector<string> games;
 
 
 

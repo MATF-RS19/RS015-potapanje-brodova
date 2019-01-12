@@ -1,7 +1,11 @@
 #include "button.h"
 #include <QBrush>
+#include <player.h>
+#include <battleshipgame.h>
 
-Button::Button(QString str,int w,int h,QGraphicsItem* parent) : QGraphicsRectItem(parent)
+extern BattleshipGame* game;
+
+Button::Button(QString str,int w,int h,int id,QGraphicsItem* parent) : QGraphicsRectItem(parent)
 {
     setRect(0,0,w,h);
     QBrush brush;
@@ -14,9 +18,13 @@ Button::Button(QString str,int w,int h,QGraphicsItem* parent) : QGraphicsRectIte
     int by = rect().height()/2 - name->boundingRect().height()/2;
 
     name->setPos(bx,by);
+
+    this->id=id;
+
 }
 
 
 void Button::mousePressEvent(QGraphicsSceneMouseEvent* event){
+    game->player1->gameID = game->games[id];
     emit clicked();
 }

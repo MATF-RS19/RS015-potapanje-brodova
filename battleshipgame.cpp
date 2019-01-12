@@ -23,10 +23,7 @@ BattleshipGame::BattleshipGame(QWidget *parent)
 
     scene->setSceneRect(0,0,1200,800);
 
-    //ni pozadina ne radi dobro, kao da ne uzima sliku kako treba
-
     QImage bg(":/images/images/bg.jpeg");
-    std::cout << "background is " << bg.isNull() << std::endl;
     QBrush brush(bg);
     scene->setBackgroundBrush(brush);
 
@@ -117,7 +114,7 @@ void BattleshipGame::lobby(){
         QString name = textName->text();
 
         string secret = interface.registerUser(name.toStdString());
-        cout << secret << endl;
+        cout <<"secret:" <<secret << endl;
 
         player1 = new Player();
         player1->setName(name);
@@ -137,11 +134,8 @@ void BattleshipGame::lobby(){
         createButton->show();
         createButton->setEnabled(true);
 
-        std::vector<string> games = interface.getOpenGames();
-        std::cout << "G" << std::endl;
-        for(auto i = games.begin(); i != games.end() ; i++){
-            std::cout << "games : " << *i <<std::endl;
-        }
+        games.clear();
+        games = interface.getOpenGames();
 
         QGraphicsRectItem* panel = new QGraphicsRectItem(100,100,500,300);
         QBrush brush;
@@ -157,7 +151,7 @@ void BattleshipGame::lobby(){
         for(auto i = games.begin(); i != games.end() ;j++, i++){
            label = scene->addText(QString::fromStdString(*i));
            label->setPos(102,102+20*j);
-           button = new Button(QString("Join"),50,20);
+           button = new Button(QString("Join"),50,20,j);
            button->setPos(400,102 + 20*j);
            connect(button,SIGNAL(clicked()),this,SLOT(lock()));
            scene->addItem(button);
@@ -186,6 +180,9 @@ void BattleshipGame::lock(){
         connect(lockButton,SIGNAL(clicked()),this,SLOT(start()));
         lockButton->show();
         lockButton->setEnabled(false);
+
+        std::cout << player1->gameID << std::endl;
+
     } catch (string const err) {
         cerr << err << endl;
     }
