@@ -25,6 +25,6 @@ Button::Button(QString str,int w,int h,int id,QGraphicsItem* parent) : QGraphics
 
 
 void Button::mousePressEvent(QGraphicsSceneMouseEvent* event){
-    game->player1->gameID = game->games[id];
+    game->player1->initGame(game->games[id]);
     emit clicked();
 }

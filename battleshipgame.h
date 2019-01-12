@@ -12,39 +12,39 @@
 #include "ServerCommunicator.h"
 
 
-class BattleshipGame: public QGraphicsView
-{
+class BattleshipGame: public QGraphicsView {
     Q_OBJECT
+
+private:
+    QString whoseTurn;
+    bool finishedPlacing = false;
+    ServerCommunicator interface;
 
 public:
     BattleshipGame(QWidget* parent=NULL);
-    ServerCommunicator interface;
-    void setWhoseTurn(QString);
-    QGraphicsScene* scene;
+
     Player* player1;
     Player* player2;
+    std::vector<string> games;
+
     QString getWhoseTurn(void);
+    void setWhoseTurn(QString);
     bool getFinishedPlacing();
     void setFinishedPlacing(bool b);
+
     void displayMenu();
+
+    QGraphicsScene* scene;
     QPushButton* playButton;
     QPushButton* lockButton;
     QPushButton* createButton;
     QLineEdit* textName;
-    std::vector<string> games;
-
-
 
 public slots:
     void start();
     void editText();
     void lock();
     void lobby();
-
-private:
-    QString whoseTurn;
-    bool finishedPlacing= false;
-
 };
 
 #endif // BATTLESHIPGAME_H

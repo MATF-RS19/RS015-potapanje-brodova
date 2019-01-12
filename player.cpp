@@ -2,10 +2,11 @@
 #include "battleshipgame.h"
 #include "cellboard.h"
 #include "config.h"
+#include <unistd.h>
+#include <thread>
 extern BattleshipGame* game;
 
-Player::Player()
-{
+Player::Player() {
     for(int i=0;i<BOARD_SIZE;i++){
         for(int j=0;j<BOARD_SIZE;j++){
             this->board[i][j]=0;
@@ -33,6 +34,58 @@ void Player::setSecret(QString secret){
 QString Player::getSecret(){
     return secret;
 }
+void Player::initGame(string _gameID) {
+    gameID = _gameID;
+}
+
+void Player::pollGameState() {
+    cout << "Starting to poll game state" << endl;
+    std::thread([this]() {
+        while (gameID != "") {
+            try {
+                cout << "Polling game state" << endl;
+                string response = interface.getGameState(
+                        name.toStdString(),
+                        secret.toStdString(),
+                        gameID
+                );
+                cout << response << endl << endl;
+                istringstream newState{response};
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        string cell;
+                        newState >> cell;
+                        if (board[i][j] != stoi(cell))
+                            cellboard->getCells()[j * BOARD_SIZE + i]->setState(stoi(cell));
+                        board[i][j] = stoi(cell);
+                    }
+                }
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        string cell;
+                        newState >> cell;
+                        if (enemyBoard[i][j] != stoi(cell))
+                            enemyCellBoard->getCells()[j * BOARD_SIZE + i]->setState(stoi(cell));
+                        enemyBoard[i][j] = stoi(cell);
+                    }
+                }
+                string turn;
+                newState >> turn;
+                game->setWhoseTurn(QString::fromStdString(turn));
+                string state;
+                newState >> state;
+                cout << "Game state: " << state << endl;
+                string enemyName;
+                newState >> enemyName;
+                cout << "Enemy name: " << enemyName << endl;
+            } catch (string const err) {
+                cerr << "Error: " << err << endl;
+            }
+            usleep(1000000); // mikrosekunde
+        }
+        cout << "Stopped polling game state" << endl;
+    }).detach();
+}
 
 bool Player::isHit(int x,int y){
     if(this->board[x][y] == 1){
@@ -50,7 +103,7 @@ void Player::takeTurn(int x, int y,QString player){
         return;
     }
 
-    if(this->getEnemyName() != player){
+    if(this->getEnemyName() != player){ // wtf
         return;
     }
 
@@ -60,30 +113,37 @@ void Player::takeTurn(int x, int y,QString player){
 
     std::cout << "polje" << x << " " << y << "gadja :" << game->getWhoseTurn().toStdString() << std::endl;
 
-    QGraphicsPixmapItem* p = new QGraphicsPixmapItem();
-
-    if(this->enemyBoard[x][y]==1){
-        std::cout << "pogodak" << std::endl;
-        p->setPixmap(QPixmap(":/images/images/fire.png"));
-        p->setPos(this->getBoardXE() + y*38,this->getBoardYE() + x*38);
-        this->enemyBoard[x][y]=3;
-        numOfEnemySunk++;
-        if(numOfEnemySunk == 8){
-            //game over, you win;
-        }
+    try {
+        interface.playTurn(name.toStdString(), secret.toStdString(), gameID, x, y);
         game->setWhoseTurn(this->getEnemyName());
-    }
-    else {
-            std::cout << "promasaj" << std::endl;
-            p->setPixmap(QPixmap(":/images/images/splash.png"));
-            p->setPos(this->getBoardXE() + y*38,this->getBoardYE() + x*38);
-
-            this->enemyBoard[x][y]=2;
-            game->setWhoseTurn(this->getEnemyName());
+    } catch (string const err) {
+        cerr << err << endl;
     }
 
-    p->show();
-    game->scene->addItem(p);
+//    QGraphicsPixmapItem* p = new QGraphicsPixmapItem();
+//
+//    if(this->enemyBoard[x][y]==1){
+//        std::cout << "pogodak" << std::endl;
+//        p->setPixmap(QPixmap(":/images/images/fire.png"));
+//        p->setPos(this->getBoardXE() + y*38,this->getBoardYE() + x*38);
+//        this->enemyBoard[x][y]=3;
+//        numOfEnemySunk++;
+//        if(numOfEnemySunk == 8){
+//            //game over, you win;
+//        }
+//        game->setWhoseTurn(this->getEnemyName());
+//    }
+//    else {
+//            std::cout << "promasaj" << std::endl;
+//            p->setPixmap(QPixmap(":/images/images/splash.png"));
+//            p->setPos(this->getBoardXE() + y*38,this->getBoardYE() + x*38);
+//
+//            this->enemyBoard[x][y]=2;
+//            game->setWhoseTurn(this->getEnemyName());
+//    }
+//
+//    p->show();
+//    game->scene->addItem(p);
 
 }
 

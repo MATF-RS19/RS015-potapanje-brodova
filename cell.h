@@ -22,7 +22,7 @@ public:
     QString getPlayerName(void);
     QGraphicsPixmapItem* p;
 
-
+    void setState(int);
 
     void setIsPlaced(bool b);
     void setCoords(int x,int y);

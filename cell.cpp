@@ -44,7 +44,7 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
             }
 
 
-            else
+            else // wtf
             {
                 game->player1->takeTurn(this->getX(),this->getY(),this->getPlayerName());
             }
@@ -63,14 +63,7 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
                 game->player1->board[this->getX()][this->getY()] = 1;
                 game->player1->shipsPlaced += 1;
 
-                this->setOpacity(0.5);
-                p = new QGraphicsPixmapItem();
-
-                QPixmap map(":/images/images/ship.png");
-                p->setPixmap(map);
-                p->setPos(100 + 38*this->getY(), 350 + 38*this->getX());
-                p->show();
-                game->scene->addItem(p);
+                setState(1);
 
                 if(game->player1->shipsPlaced == NUMBER_OF_SHIPS){
                     game->lockButton->setEnabled(true);
@@ -108,4 +101,21 @@ QString Cell::getPlayerName(void){
     return this->playerName;
 }
 
+void Cell::setState(int state) {
+    if (state == 0) {
+        setBrush(Qt::white);
+    } else if (state == 1) {
+        QImage ship(":/images/images/ship.png");
+        QBrush brush(ship);
+        setBrush(brush);
+    } else if (state == 2) {
+        QImage ship(":/images/images/splash.png");
+        QBrush brush(ship);
+        setBrush(brush);
+    } else if (state == 3) {
+        QImage ship(":/images/images/fire.png");
+        QBrush brush(ship);
+        setBrush(brush);
+    }
+}
 

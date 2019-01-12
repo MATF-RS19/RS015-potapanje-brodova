@@ -41,33 +41,35 @@ void BattleshipGame::start(){
             for (int j = 0; j < BOARD_SIZE; j++)
                 if (player1->board[i][j])
                     ships += to_string(i) + "," + to_string(j) + ",";
-        if(player1->gameID == ""){
+        if (player1->gameID == "") {
             string gameId = interface.createGame(
-                        player1->getName().toStdString(),
-                        player1->getSecret().toStdString(),
+                    player1->getName().toStdString(),
+                    player1->getSecret().toStdString(),
                     ships
-                    );
-                    cout << "Created game ID: " << gameId << endl;
-         }
-        else{
+            );
+            cout << "Created game ID: " << gameId << endl;
+            player1->initGame(gameId);
+            player1->gameID = gameId;
+            player1->pollGameState();
+        } else {
             string str = interface.joinGame(
-                        player1->getName().toStdString(),
-                        player1->getSecret().toStdString(),
-                        player1->gameID,
-                        ships
-                        );
+                    player1->getName().toStdString(),
+                    player1->getSecret().toStdString(),
+                    player1->gameID,
+                    ships
+            );
             setWhoseTurn(player1->getName());
+            player1->pollGameState();
         }
 
 
         player1->setEnemyName(QString("enemy"));
-        std::cout<< "enemy name = " << player1->getEnemyName().toStdString() << std::endl;
+        std::cout << "enemy name = " << player1->getEnemyName().toStdString() << std::endl;
 
         player1->enemyCellBoard->setPlayerName(player1->getEnemyName());
         player1->setBoardXE(700);
         player1->setBoardYE(350);
-        player1->enemyCellBoard->placeBoard(player1->getBoardXE(),player1->getBoardYE(),BOARD_SIZE,BOARD_SIZE);
-
+        player1->enemyCellBoard->placeBoard(player1->getBoardXE(), player1->getBoardYE(), BOARD_SIZE, BOARD_SIZE);
 
         srand(time(NULL));
     } catch (string const err) {
@@ -104,7 +106,6 @@ bool BattleshipGame::getFinishedPlacing(){
 }
 
 void BattleshipGame::displayMenu(){
-
     QGraphicsTextItem* title = new QGraphicsTextItem(QString("Battleship online"));
     int tx = 100;
     int ty = 150;
@@ -174,12 +175,9 @@ void BattleshipGame::lobby(){
            connect(button,SIGNAL(clicked()),this,SLOT(lock()));
            scene->addItem(button);
         }
-
-
-
-        } catch (string const err) {
+    } catch (string const err) {
         cerr << err << endl;
-        }
+    }
 }
 
 
@@ -198,7 +196,6 @@ void BattleshipGame::lock(){
         lockButton->setEnabled(false);
 
         std::cout << player1->gameID << std::endl;
-
     } catch (string const err) {
         cerr << err << endl;
     }
