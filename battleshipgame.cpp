@@ -215,20 +215,11 @@ void BattleshipGame::editText(){
 void BattleshipGame::endGame(){
     //congradulations, you win or you lose
     scene->clear();
-    QGraphicsTextItem* endMsg;
-    if(player1->WinnerStatus == "Won"){
-        endMsg = new QGraphicsTextItem(QString("Congradulations, you won!!"));
-        int mx=scene->width()/2 - endMsg->boundingRect().width()/2;
-        int my=scene->height()/2 - endMsg->boundingRect().height()/2;
-        endMsg->setPos(mx,my);
-        scene->addItem(endMsg);
+    if(player1->WinnerStatus == "won"){
+        basicTurnText->setText(QString("Congradulations,you won"));
     }
     else{
-        endMsg = new QGraphicsTextItem(QString("Sorry to inform you, you lost"));
-        int mx=scene->width()/2 - endMsg->boundingRect().width()/2;
-        int my=scene->height()/2 - endMsg->boundingRect().height()/2;
-        endMsg->setPos(mx,my);
-        scene->addItem(endMsg);
+        basicTurnText->setText(QString("Sorry to inform you, you lost"));
     }
 
     returnToLobby = new QPushButton("LOBBY",this);

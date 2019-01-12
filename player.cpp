@@ -76,10 +76,10 @@ void Player::pollGameState() {
                 string state;
                 newState >> state;
 
-                if(state == "playing" && game->getWhoseTurn()=="enemy"){
+                if(state == "playing" && game->getWhoseTurn() != this->getName()){
                     game->basicTurnText->setText("Enemy Turn");
                 }
-                if(state == "playing" && game -> getWhoseTurn()!= "enemy"){
+                if(state == "playing" && game->getWhoseTurn() == this->getName()){
                     game->basicTurnText->setText("Your Turn");
                 }
 
@@ -101,7 +101,7 @@ void Player::pollGameState() {
             usleep(1000000); // mikrosekunde
         }
         cout << "Stopped polling game state" << endl;
-        //game->endGame();
+        game->endGame();
     }).detach();
 
 
