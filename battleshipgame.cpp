@@ -140,7 +140,7 @@ void BattleshipGame::lobby(){
             name = QString::fromStdString(_name);
             cout << _name << endl;
 
-            if (_name == "") return false;
+            if (_name == "") return;
 
             string secret = interface.registerUser(name.toStdString());
             cout << "secret: " << secret << endl;
