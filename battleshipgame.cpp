@@ -26,20 +26,33 @@ BattleshipGame::BattleshipGame(QWidget *parent)
     QImage bg(":/images/images/bg.jpeg");
     QBrush brush(bg);
     scene->setBackgroundBrush(brush);
-    playButton = new QPushButton("PLAY",this);
-    playButton->hide();
+
     basicTurnText = new QLabel("Finding an opponent", this);
     basicTurnText->hide();
-    textName = new QLineEdit;
+
+    playButton = new QPushButton("PLAY",this);
+    connect(playButton,SIGNAL(clicked()),this,SLOT(lobby()));
+    playButton->hide();
+
+    refreshButton = new QPushButton("Refresh",this);
+    connect(refreshButton,SIGNAL(clicked()),this,SLOT(refresh()));
+    refreshButton->hide();
+
     createButton = new QPushButton("CREATE",this);
+    connect(createButton,SIGNAL(clicked()),this,SLOT(lock()));
     createButton->hide();
+
     lockButton = new QPushButton("LOCK",this);
+    connect(lockButton,SIGNAL(clicked()),this,SLOT(start()));
     lockButton->hide();
+
     returnToLobby = new QPushButton("LOBBY",this);
+    connect(returnToLobby,SIGNAL(clicked()),this,SLOT(lobby()));
     returnToLobby->hide();
 
 
 
+    textName = new QLineEdit;
 
 
 
@@ -50,6 +63,7 @@ void BattleshipGame::start(){
     setFinishedPlacing(true);
     lockButton->hide();
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
+    basicTurnText->setText("Waiting for opponent");
     basicTurnText->setAlignment(Qt::AlignCenter);
     basicTurnText->setGeometry(0, 300, 1200, 30);
     basicTurnText->show();
@@ -67,7 +81,6 @@ void BattleshipGame::start(){
             );
             cout << "Created game ID: " << gameId << endl;
             player1->initGame(gameId);
-            player1->gameID = gameId;
             player1->pollGameState();
         } else {
             string str = interface.joinGame(
@@ -133,7 +146,6 @@ void BattleshipGame::displayMenu(){
     int bx=100;
     int by=250;
     playButton->setGeometry(bx,by,50,25);
-    connect(playButton,SIGNAL(clicked()),this,SLOT(lobby()));
     playButton->show();
     playButton->setEnabled(false);
 
@@ -189,10 +201,14 @@ void BattleshipGame::lobby(){
         int bx=700;
         int by=250;
         createButton->setGeometry(bx,by,50,25);
-        connect(createButton,SIGNAL(clicked()),this,SLOT(lock()));
+
         createButton->show();
         createButton->setEnabled(true);
 
+        int rx=700;
+        int ry=280;
+        refreshButton->setGeometry(rx,ry,50,25);
+        refreshButton->show();
         games.clear();
         games = interface.getOpenGames();
 
@@ -215,6 +231,9 @@ void BattleshipGame::lobby(){
            connect(button,SIGNAL(clicked()),this,SLOT(lock()));
            scene->addItem(button);
         }
+
+
+
     } catch (string const err) {
         cerr << err << endl;
     }
@@ -230,7 +249,7 @@ void BattleshipGame::lock(){
         int bx=100;
         int by=250;
         lockButton->setGeometry(bx,by,50,25);
-        connect(lockButton,SIGNAL(clicked()),this,SLOT(start()));
+
         lockButton->show();
         lockButton->setEnabled(false);
 
@@ -261,7 +280,6 @@ void BattleshipGame::endGame(){
     int bx=200;
     int by=250;
     returnToLobby->setGeometry(bx,by,70,35);
-    connect(returnToLobby,SIGNAL(clicked()),this,SLOT(lobby()));
     returnToLobby->show();
     returnToLobby->setEnabled(true);
 
@@ -275,5 +293,33 @@ void BattleshipGame::createPlayer(QString name,string secret){
     player1->setSecret(QString::fromStdString(secret));
     isPlayerCreated=true;
     cout << isPlayerCreated << endl;
+
+}
+
+
+void BattleshipGame::refresh(){
+    scene->clear();
+    games.clear();
+    games = interface.getOpenGames();
+
+    QGraphicsRectItem* panel = new QGraphicsRectItem(100,100,500,300);
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(Qt::white);
+    panel->setBrush(brush);
+    panel->setOpacity(1);
+    scene->addItem(panel);
+    QGraphicsTextItem* label;
+    Button* button;
+    int j=0;
+
+    for(auto i = games.begin(); i != games.end() ;j++, i++){
+       label = scene->addText(QString::fromStdString(*i));
+       label->setPos(102,102+20*j);
+       button = new Button(QString("Join"),50,20,j);
+       button->setPos(400,102 + 20*j);
+       connect(button,SIGNAL(clicked()),this,SLOT(lock()));
+       scene->addItem(button);
+    }
 
 }

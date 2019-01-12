@@ -44,6 +44,7 @@ public:
     QPushButton* lockButton;
     QPushButton* createButton;
     QPushButton* returnToLobby;
+    QPushButton* refreshButton;
     QLineEdit* textName;
     QLabel* basicTurnText;
 
@@ -52,6 +53,7 @@ public slots:
     void editText();
     void lock();
     void lobby();
+    void refresh();
 };
 
 #endif // BATTLESHIPGAME_H
