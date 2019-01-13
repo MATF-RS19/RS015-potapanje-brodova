@@ -19,7 +19,7 @@ string BattleshipServer::getOpenGames() {
 
 
     for (auto &game : games) {
-        response += game.getId() + "\n";
+        response += game->getId() + "\n";
     }
     return response;
 }
@@ -44,6 +44,11 @@ string BattleshipServer::getGameState(string username, string secret, string gam
 string BattleshipServer::playTurn(string username, string secret, string gameId, string x, string y) {
     if (!gameManager.playTurn(username, secret, gameId, stoi(x), stoi(y)))
         throw "Error";
+    return "OK";
+}
+
+string BattleshipServer::unregisterUser(string username, string secret) {
+    gameManager.unregisterUser(username, secret);
     return "OK";
 }
 
@@ -87,6 +92,11 @@ void BattleshipServer::handleRequest(http_request request) {
             request.reply(status_codes::OK, playTurn(username, secret, gameId, x, y));
         } else if (path == "/games") {
             request.reply(status_codes::OK, getOpenGames());
+        } else if (path == "/unregister") {
+            // TODO check if params exist
+            string username = params.find("username")->second;
+            string secret = params.find("secret")->second;
+            request.reply(status_codes::OK, unregisterUser(username, secret));
         } else {
             request.reply(status_codes::OK, "hello");
         }

@@ -36,18 +36,22 @@ private:
     std::string id;
     User *creator;
     User *challenger;
-
+    time_t lastActive;
     game_state state = OPEN;
     game_turn turn = CHALLENGER;
     std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> creatorBoard;
     std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> challengerBoard;
+
 public:
     Game(User *creator, vector<int>);
     bool playTurn(User *auth, int x, int y);
-    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getCreatorBoard() const;
-    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getChallengerBoard() const;
+    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getCreatorBoard();
+    std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getChallengerBoard();
     bool setChallenger(User *challenger, vector<int>);
     void checkState();
+
+    void updateLastActive();
+    bool timedOut() const;
 
     static std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> cleanOpponentBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE>);
     static string printBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> board);

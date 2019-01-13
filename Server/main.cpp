@@ -13,7 +13,7 @@ int testGameManager() {
     string gameId = gm.createGame("Korisnik 1", secret1, "0,0,1,1,2,2,3,4,4,4,5,5,6,6,7,7");
     gm.joinGame("Korisnik 2", secret2, gameId, "0,0,1,1,2,2,3,4,4,4,5,5,6,6,7,7");
 
-    cout << Game::printBoard(gm.getGames().at(0).getCreatorBoard()) << endl;
+    cout << Game::printBoard(gm.getGames().at(0)->getCreatorBoard()) << endl;
 //    cout << Game::printBoard(gm.getGames().at(0).getOpponentBoard()) << endl;
 
     cout << gm << endl << endl;

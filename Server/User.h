@@ -11,9 +11,14 @@
 class User {
 private:
     std::string name, secret;
+    time_t lastActive;
 
 public:
     User(std::string _name);
+
+    void updateLastActive();
+
+    bool timedOut();
 
     bool operator==(const User &rhs) const;
 

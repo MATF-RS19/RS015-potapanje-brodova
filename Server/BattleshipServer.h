@@ -24,6 +24,7 @@ public:
     string getOpenGames();
     string getGameState(string username, string secret, string gameId);
     string playTurn(string username, string secret, string gameId, string x, string y);
+    string unregisterUser(string username, string secret);
 
     virtual ~BattleshipServer();
 

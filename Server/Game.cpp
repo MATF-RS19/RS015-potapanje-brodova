@@ -24,9 +24,22 @@ Game::Game(User *_creator, vector<int> coords) {
     for (int i = 0; i < NUMBER_OF_SHIPS; i++) {
         creatorBoard[coords[i * 2]][coords[i * 2 + 1]] = PLACED;
     }
+    time(&lastActive);
+}
+
+void Game::updateLastActive() {
+    time(&lastActive);
+}
+
+bool Game::timedOut() const {
+    time_t currentTime;
+    time(&currentTime);
+    return currentTime - lastActive > 60 * 2;
 }
 
 bool Game::playTurn(User *auth, int x, int y) {
+    updateLastActive();
+
     if (state != PLAYING)
         return false;
     if (*auth == *creator) {
@@ -75,6 +88,8 @@ void Game::checkState() {
 }
 
 bool Game::setChallenger(User *_challenger, vector<int> coords) {
+    updateLastActive();
+
     if (coords.size() != 2 * NUMBER_OF_SHIPS)
         throw "8 ship coordinates required";
 
@@ -101,11 +116,13 @@ string Game::printBoard(std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> boa
     return response;
 }
 
-std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> Game::getCreatorBoard() const {
+std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> Game::getCreatorBoard() {
+    updateLastActive();
     return creatorBoard;
 }
 
-std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> Game::getChallengerBoard() const {
+std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> Game::getChallengerBoard() {
+    updateLastActive();
     return challengerBoard;
 }
 
