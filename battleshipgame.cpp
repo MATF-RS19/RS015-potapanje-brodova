@@ -30,6 +30,26 @@ BattleshipGame::BattleshipGame(QWidget *parent)
     basicTurnText = new QLabel("Finding an opponent", this);
     basicTurnText->hide();
 
+    errorLabel = new QLabel("", this);
+    errorLabel->hide();
+    errorLabel->setAlignment(Qt::AlignCenter);
+    errorLabel->setGeometry(0, 0, 1200, 30);
+    errorLabel->setStyleSheet("\
+        background-color: #F55624;\
+        color: white;\
+        font-size: 16px;\
+    ");
+
+    hideErrorButton = new QPushButton("x",this);
+    hideErrorButton->setGeometry(1170, 0, 30, 30);
+    hideErrorButton->setFlat(true);
+    hideErrorButton->setStyleSheet("\
+        background-color: transparent;\
+        color: white;\
+    ");
+    connect(hideErrorButton,SIGNAL(clicked()),this,SLOT(hideError()));
+    hideErrorButton->hide();
+
     playButton = new QPushButton("PLAY",this);
     connect(playButton,SIGNAL(clicked()),this,SLOT(lobby()));
     playButton->hide();
@@ -94,7 +114,7 @@ void BattleshipGame::start(){
         }
 
 
-        player1->setEnemyName(QString("enemy"));
+        player1->setEnemyName(QString(""));
         std::cout << "enemy name = " << player1->getEnemyName().toStdString() << std::endl;
 
         player1->enemyCellBoard->setPlayerName(player1->getEnemyName());
@@ -105,6 +125,7 @@ void BattleshipGame::start(){
         viewport()->update();
     } catch (string const err) {
         cerr << err << endl;
+        showError(err);
     }
 
 }
@@ -127,11 +148,14 @@ bool BattleshipGame::getFinishedPlacing(){
 }
 
 void BattleshipGame::displayMenu(){
-    QGraphicsTextItem* title = new QGraphicsTextItem(QString("Battleship online"));
+    QGraphicsTextItem* title = new QGraphicsTextItem(QString("Battleships Online"));
     int tx = width()/4;
     int ty = 50;
     title->setPos(tx,ty);
     title->setScale(5);
+    QFont font = title->font();
+    font.setBold(true);
+    title->setFont(font);
     scene->addItem(title);
 
     int bx=this->width()/2-50;
@@ -163,6 +187,7 @@ void BattleshipGame::lobby(){
 
             if (_name == "") return;
 
+            hideError();
             string secret = interface.registerUser(name.toStdString());
             cout << "secret: " << secret << endl;
 
@@ -207,6 +232,7 @@ void BattleshipGame::lobby(){
         loadGames();
     } catch (string const err) {
         cerr << err << endl;
+        showError(err);
     }
 }
 
@@ -230,6 +256,7 @@ void BattleshipGame::lock(){
         viewport()->update();
     } catch (string const err) {
         cerr << err << endl;
+        showError(err);
     }
 }
 
@@ -244,11 +271,12 @@ void BattleshipGame::editText(){
 void BattleshipGame::endGame(){
     //congradulations, you win or you lose
     scene->clear();
-    if(player1->WinnerStatus == "won"){
+    if(player1->WinnerStatus == "won") {
         basicTurnText->setText(QString("Congratulations, you won!"));
-    }
-    else{
+    } else if(player1->WinnerStatus == "lost") {
         basicTurnText->setText(QString("Sorry to inform you, you lost"));
+    } else {
+        basicTurnText->setText(QString("The other player seems to have disconnected"));
     }
 
     int bx=this->width()/2-50;
@@ -299,7 +327,20 @@ void BattleshipGame::loadGames(){
     viewport()->update();
 }
 
-BattleshipGame::~BattleshipGame() {
-    if (isPlayerCreated)
+void BattleshipGame::showError(string error) {
+    errorLabel->setText(QString::fromStdString(error));
+    errorLabel->show();
+    hideErrorButton->show();
+}
+
+void BattleshipGame::hideError() {
+    errorLabel->hide();
+    hideErrorButton->hide();
+}
+
+void BattleshipGame::beforeExit() {
+    if (isPlayerCreated) {
+        cout << "Unregistering..." << endl;
         interface.unregister(player1->getName().toStdString(), player1->getSecret().toStdString());
+    }
 }

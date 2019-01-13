@@ -33,6 +33,7 @@ public:
     bool getFinishedPlacing();
     void setFinishedPlacing(bool b);
     void createPlayer(QString name,string secret);
+    void showError(string);
 
     void displayMenu();
     void endGame();
@@ -47,8 +48,8 @@ public:
     QPushButton* refreshButton;
     QLineEdit* textName;
     QLabel* basicTurnText;
-
-    virtual ~BattleshipGame();
+    QLabel* errorLabel;
+    QPushButton* hideErrorButton;
 
 public slots:
     void start();
@@ -56,6 +57,8 @@ public slots:
     void lock();
     void lobby();
     void loadGames();
+    void hideError();
+    void beforeExit();
 };
 
 #endif // BATTLESHIPGAME_H

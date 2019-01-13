@@ -80,28 +80,28 @@ void Player::pollGameState() {
                 }
 
                 cout << "Game state: " << state << ", turn: " << turn << endl;
-                if(state == "won"){
+                if (state == "won") {
                     this->WinnerStatus = "won";
                     this->gameID = "";
-                }
-                if(state == "lost"){
+                } else if(state == "lost") {
                     this->WinnerStatus = "lost";
                     this->gameID = "";
                 }
                 string enemyName;
                 newState >> enemyName;
+                setEnemyName(QString::fromStdString(enemyName));
 
                 game->viewport()->update();
             } catch (string const err) {
                 cerr << "Error: " << err << endl;
+                this->WinnerStatus = err;
+                this->gameID = "";
             }
             usleep(1000000); // mikrosekunde
         }
         cout << "Stopped polling game state" << endl;
         game->endGame();
     }).detach();
-
-
 }
 
 bool Player::isHit(int x,int y){
@@ -114,17 +114,16 @@ bool Player::isHit(int x,int y){
 }
 
 
-void Player::takeTurn(int x, int y,QString player){
-
-    if(game->getWhoseTurn() != this->getName()){
+void Player::takeTurn(int x, int y,QString cellOwner){
+    if (game->getWhoseTurn() != this->getName()) { // nije korisnikov potez
         return;
     }
 
-    if(this->getEnemyName() != player){ // wtf
+    if (this->getName() == cellOwner) { // korisnik kliknuo na svoje polje
         return;
     }
 
-    if(this->enemyBoard[x][y] ==2 || this->enemyBoard[x][y] == 3){
+    if (this->enemyBoard[x][y] == 2 || this->enemyBoard[x][y] == 3) { // vec kliknuto
         return;
     }
 
@@ -140,6 +139,7 @@ void Player::takeTurn(int x, int y,QString player){
         game->basicTurnText->setText("Enemy Turn");
     } catch (string const err) {
         cerr << err << endl;
+        game->showError(err);
     }
 }
 
