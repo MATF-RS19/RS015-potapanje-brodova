@@ -4,14 +4,14 @@
 #include <QGraphicsRectItem>
 #include "battleshipgame.h"
 
-BattleshipGame* game;
+BattleshipGame *game;
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    game=new BattleshipGame();
+    game = new BattleshipGame();
     game->show();
-
     game->displayMenu();
-    return a.exec();
+    const int ret = a.exec();
+    delete game;
+    return ret;
 }

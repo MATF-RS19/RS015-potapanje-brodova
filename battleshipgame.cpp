@@ -272,7 +272,7 @@ void BattleshipGame::endGame(){
     //congradulations, you win or you lose
     scene->clear();
     if(player1->WinnerStatus == "won"){
-        basicTurnText->setText(QString("Congratulations,you won"));
+        basicTurnText->setText(QString("Congratulations, you won!"));
     }
     else{
         basicTurnText->setText(QString("Sorry to inform you, you lost"));
@@ -289,13 +289,10 @@ void BattleshipGame::endGame(){
 
 
 void BattleshipGame::createPlayer(QString name,string secret){
-
     player1 = new Player();
     player1->setName(name);
     player1->setSecret(QString::fromStdString(secret));
     isPlayerCreated=true;
-    cout << isPlayerCreated << endl;
-
 }
 
 
@@ -325,4 +322,9 @@ void BattleshipGame::refresh(){
     }
 
     viewport()->update();
+}
+
+BattleshipGame::~BattleshipGame() {
+    if (isPlayerCreated)
+        interface.unregister(player1->getName().toStdString(), player1->getSecret().toStdString());
 }

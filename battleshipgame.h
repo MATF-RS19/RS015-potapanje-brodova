@@ -48,6 +48,8 @@ public:
     QLineEdit* textName;
     QLabel* basicTurnText;
 
+    virtual ~BattleshipGame();
+
 public slots:
     void start();
     void editText();

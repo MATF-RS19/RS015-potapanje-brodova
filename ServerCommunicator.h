@@ -22,6 +22,7 @@ public:
     string joinGame(string username, string secret, string ships, string gameId);
     string getGameState(string username, string secret, string gameId);
     string playTurn(string username, string secret, string gameId, int turn_x, int turn_y);
+    void unregister(string username, string secret);
     vector<string> getOpenGames();
 };
 

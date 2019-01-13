@@ -137,3 +137,10 @@ vector<string> ServerCommunicator::getOpenGames() {
         return requestTask.get();
     throw requestTask.get();
 }
+
+void ServerCommunicator::unregister(string username, string secret) {
+    uri_builder builder("/unregister");
+    builder.append_query("username", username);
+    builder.append_query("secret", secret);
+    client.request(methods::GET, builder.to_string());
+}
