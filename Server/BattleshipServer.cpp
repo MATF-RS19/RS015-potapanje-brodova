@@ -42,9 +42,7 @@ string BattleshipServer::getGameState(string username, string secret, string gam
 }
 
 string BattleshipServer::playTurn(string username, string secret, string gameId, string x, string y) {
-    if (!gameManager.playTurn(username, secret, gameId, stoi(x), stoi(y)))
-        throw "Error";
-    return "OK";
+    return gameManager.playTurn(username, secret, gameId, stoi(x), stoi(y));
 }
 
 string BattleshipServer::unregisterUser(string username, string secret) {

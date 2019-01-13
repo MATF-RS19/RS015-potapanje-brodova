@@ -172,7 +172,7 @@ bool GameManager::joinGame(string username, string secret, string gameId, string
     return game->setChallenger(user, coords);
 }
 
-bool GameManager::playTurn(string username, string secret, string gameId, int turn_x, int turn_y) {
+string GameManager::playTurn(string username, string secret, string gameId, int turn_x, int turn_y) {
     if (!checkAuth(username, secret))
         throw "Auth error";
     Game *game = getGameById(gameId);

@@ -37,33 +37,31 @@ bool Game::timedOut() const {
     return currentTime - lastActive > 60 * 2;
 }
 
-bool Game::playTurn(User *auth, int x, int y) {
+string Game::playTurn(User *auth, int x, int y) {
     updateLastActive();
 
     if (state != PLAYING)
-        return false;
+        throw "Invalid state";
     if (*auth == *creator) {
-        if (turn != CREATOR) return false;
-        if (challengerBoard[x][y] == TARGETED || challengerBoard[x][y] == DESTROYED) return false;
+        if (turn != CREATOR) throw "Invalid turn";
         if (challengerBoard[x][y] == EMPTY) challengerBoard[x][y] = TARGETED;
         if (challengerBoard[x][y] == PLACED) {
             challengerBoard[x][y] = DESTROYED;
             checkState();
         }
         turn = CHALLENGER;
-        return true;
+        return to_string(challengerBoard[x][y]);
     } else if (*auth == *challenger) {
-        if (turn != CHALLENGER) return false;
-        if (creatorBoard[x][y] == TARGETED || creatorBoard[x][y] == DESTROYED) return false;
+        if (turn != CHALLENGER) throw "Invalid turn";
         if (creatorBoard[x][y] == EMPTY) creatorBoard[x][y] = TARGETED;
         if (creatorBoard[x][y] == PLACED) {
             creatorBoard[x][y] = DESTROYED;
             checkState();
         }
         turn = CREATOR;
-        return true;
+        return to_string(creatorBoard[x][y]);
     }
-    return false;
+    return "";
 }
 
 void Game::checkState() {

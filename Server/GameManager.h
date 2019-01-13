@@ -26,7 +26,7 @@ public:
 
     vector<Game*> getOpenGames();
     bool joinGame(string username, string secret, string gameId, string ships);
-    bool playTurn(string username, string secret, string gameId, int turn_x, int turn_y);
+    string playTurn(string username, string secret, string gameId, int turn_x, int turn_y);
     string getGameState(string username, string secret, string gameId);
     const Game *getGameById(string) const;
     Game *getGameById(string);

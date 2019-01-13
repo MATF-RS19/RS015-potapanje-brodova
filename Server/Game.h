@@ -44,7 +44,7 @@ private:
 
 public:
     Game(User *creator, vector<int>);
-    bool playTurn(User *auth, int x, int y);
+    string playTurn(User *auth, int x, int y);
     std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getCreatorBoard();
     std::array<std::array<cell, BOARD_SIZE>, BOARD_SIZE> getChallengerBoard();
     bool setChallenger(User *challenger, vector<int>);
