@@ -7,23 +7,24 @@
 #include <QLineEdit>
 #include "ServerCommunicator.h"
 #include <QImage>
-#include "config.h"
+#include "../config.h"
 #include <vector>
 #include <string>
 #include <QLabel>
-#include <button.h>
+#include "button.h"
 
 BattleshipGame::BattleshipGame(QWidget *parent)
 {
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(1200,800);
+    setWindowTitle("Battleships Online");
 
     scene = new QGraphicsScene();
 
     scene->setSceneRect(0,0,1200,800);
 
-    QImage bg(":/images/images/bg.jpeg");
+    QImage bg(":images/bg.jpeg");
     QBrush brush(bg);
     scene->setBackgroundBrush(brush);
 

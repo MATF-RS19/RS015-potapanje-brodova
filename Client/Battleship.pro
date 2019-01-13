@@ -40,7 +40,7 @@ HEADERS += \
     battleshipgame.h \
     player.h \
     ServerCommunicator.h \
-    config.h \
+    ../config.h \
     button.h
 
 FORMS +=

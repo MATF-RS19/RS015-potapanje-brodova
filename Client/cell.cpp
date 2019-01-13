@@ -4,7 +4,7 @@
 #include "battleshipgame.h"
 #include <string>
 #include <QGraphicsPixmapItem>
-#include "config.h"
+#include "../config.h"
 
 extern BattleshipGame* game;
 
@@ -104,15 +104,15 @@ void Cell::setState(int state) {
     if (state == 0) {
         setBrush(Qt::white);
     } else if (state == 1) {
-        QImage ship(":/images/images/ship.png");
+        QImage ship(":images/ship.png");
         QBrush brush(ship);
         setBrush(brush);
     } else if (state == 2) {
-        QImage ship(":/images/images/splash.png");
+        QImage ship(":images/splash.png");
         QBrush brush(ship);
         setBrush(brush);
     } else if (state == 3) {
-        QImage ship(":/images/images/fire.png");
+        QImage ship(":images/fire.png");
         QBrush brush(ship);
         setBrush(brush);
     }

@@ -1,7 +1,7 @@
 #include "player.h"
 #include "battleshipgame.h"
 #include "cellboard.h"
-#include "config.h"
+#include "../config.h"
 #include <unistd.h>
 #include <thread>
 extern BattleshipGame* game;
@@ -72,11 +72,13 @@ void Player::pollGameState() {
                 string state;
                 newState >> state;
 
-                if(state == "playing" && game->getWhoseTurn() != this->getName()){
-                    game->basicTurnText->setText("Enemy Turn");
-                }
-                if(state == "playing" && game->getWhoseTurn() == this->getName()){
-                    game->basicTurnText->setText("Your Turn");
+                if(state == "playing") {
+                    if (game->getWhoseTurn() != this->getName()) {
+                        game->basicTurnText->setText("Enemy turn");
+                    }
+                    if(game->getWhoseTurn() == this->getName()){
+                        game->basicTurnText->setText("Your turn");
+                    }
                 }
 
                 cout << "Game state: " << state << ", turn: " << turn << endl;
@@ -136,7 +138,7 @@ void Player::takeTurn(int x, int y,QString cellOwner){
             enemyBoard[x][y] = stoi(newCellState);
         }
         game->setWhoseTurn(this->getEnemyName());
-        game->basicTurnText->setText("Enemy Turn");
+        game->basicTurnText->setText("Enemy turn");
     } catch (string const err) {
         cerr << err << endl;
         game->showError(err);

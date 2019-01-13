@@ -6,9 +6,9 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <iostream>
-#include <cellboard.h>
+#include "cellboard.h"
 #include "ServerCommunicator.h"
-#include "config.h"
+#include "../config.h"
 
 class Player {
 private:

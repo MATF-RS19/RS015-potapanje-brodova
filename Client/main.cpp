@@ -9,6 +9,7 @@ BattleshipGame *game;
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
+    a.setWindowIcon(QIcon(":images/ship-fullsize.png"));
     game = new BattleshipGame();
     game->show();
     game->displayMenu();

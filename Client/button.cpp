@@ -1,8 +1,8 @@
 #include "button.h"
 #include <QBrush>
-#include <player.h>
-#include <battleshipgame.h>
-#include "config.h"
+#include "player.h"
+#include "battleshipgame.h"
+#include "../config.h"
 
 extern BattleshipGame* game;
 

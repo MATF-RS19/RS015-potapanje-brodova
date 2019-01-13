@@ -5,7 +5,7 @@
 #include "ServerCommunicator.h"
 
 #include <cpprest/http_client.h>
-#include "config.h"
+#include "../config.h"
 
 using namespace std;
 using namespace web;
@@ -142,5 +142,6 @@ void ServerCommunicator::unregister(string username, string secret) {
     uri_builder builder("/unregister");
     builder.append_query("username", username);
     builder.append_query("secret", secret);
-    client.request(methods::GET, builder.to_string());
+    pplx::task<http_response> requestTask = client.request(methods::GET, builder.to_string());
+    requestTask.wait();
 }
