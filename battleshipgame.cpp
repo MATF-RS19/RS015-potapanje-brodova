@@ -65,7 +65,11 @@ void BattleshipGame::start(){
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
     basicTurnText->setText("Waiting for opponent");
     basicTurnText->setAlignment(Qt::AlignCenter);
-    basicTurnText->setGeometry(0, 300, 1200, 30);
+    basicTurnText->setGeometry(0, 300, 1200, 35);
+    QFont font = basicTurnText->font();
+    font.setBold(true);
+    font.setPointSize(25);
+    basicTurnText->setFont(font);
     basicTurnText->show();
     try {
         string ships;
@@ -98,7 +102,7 @@ void BattleshipGame::start(){
         std::cout << "enemy name = " << player1->getEnemyName().toStdString() << std::endl;
 
         player1->enemyCellBoard->setPlayerName(player1->getEnemyName());
-        player1->setBoardXE(700);
+        player1->setBoardXE(750);
         player1->setBoardYE(350);
         player1->enemyCellBoard->placeBoard(player1->getBoardXE(), player1->getBoardYE(), BOARD_SIZE, BOARD_SIZE);
 
@@ -106,16 +110,6 @@ void BattleshipGame::start(){
     } catch (string const err) {
         cerr << err << endl;
     }
-
-// sinhronizacija grafickih polja sa board poljem u playeru ( dodati atribut name u cellBoard radi sinhronizacije)
-
-// ispisivati ciji je potez
-
-// zabraniti kliktanje na protivnicko polje u toku postavljanja brodova i zabraniti kliktanje na sopstveno polje u toku svog poteza
-
-// upisivanje imena
-
-// lista trenutnih igara
 
 }
 
@@ -138,19 +132,23 @@ bool BattleshipGame::getFinishedPlacing(){
 
 void BattleshipGame::displayMenu(){
     QGraphicsTextItem* title = new QGraphicsTextItem(QString("Battleship online"));
-    int tx = 100;
-    int ty = 150;
+    int tx = width()/4;
+    int ty = 50;
     title->setPos(tx,ty);
+    title->setScale(5);
     scene->addItem(title);
 
-    int bx=100;
-    int by=250;
-    playButton->setGeometry(bx,by,50,25);
+    int bx=this->width()/2-50;
+    int by=4*this->height()/6;
+    playButton->setGeometry(bx,by,100,50);
     playButton->show();
     playButton->setEnabled(false);
 
     textName->setPlaceholderText("Enter your name");
     textName->setFocus();
+    textName->setAlignment(Qt::AlignCenter);
+    textName->setGeometry(this->width()/2-200,this->height()/2,400,50);
+    textName->setTextMargins(10,10,10,10);
     scene->addWidget(textName);
     connect(textName,SIGNAL(textChanged(QString)),this,SLOT(editText()));
 
@@ -188,7 +186,7 @@ void BattleshipGame::lobby(){
         player1->cellboard = new cellBoard();
         player1->enemyCellBoard = new cellBoard();
         player1->cellboard->setPlayerName(player1->getName());
-        player1->setBoardX(100);
+        player1->setBoardX(150);
         player1->setBoardY(350);
         player1->WinnerStatus="";
 
@@ -201,20 +199,19 @@ void BattleshipGame::lobby(){
         player1->shipsPlaced=0;
 
         int bx=700;
-        int by=250;
-        createButton->setGeometry(bx,by,50,25);
-
+        int by=375;
+        createButton->setGeometry(bx,by,100,50);
         createButton->show();
         createButton->setEnabled(true);
 
         int rx=700;
-        int ry=280;
-        refreshButton->setGeometry(rx,ry,50,25);
+        int ry=125;
+        refreshButton->setGeometry(rx,ry,100,50);
         refreshButton->show();
         games.clear();
         games = interface.getOpenGames();
 
-        QGraphicsRectItem* panel = new QGraphicsRectItem(100,100,500,300);
+        QGraphicsRectItem* panel = new QGraphicsRectItem(150,100,400,600);
         QBrush brush;
         brush.setStyle(Qt::SolidPattern);
         brush.setColor(Qt::white);
@@ -227,9 +224,9 @@ void BattleshipGame::lobby(){
 
         for(auto i = games.begin(); i != games.end() ;j++, i++){
            label = scene->addText(QString::fromStdString(*i));
-           label->setPos(102,102+20*j);
+           label->setPos(152,102+20*j);
            button = new Button(QString("Join"),50,20,j);
-           button->setPos(400,102 + 20*j);
+           button->setPos(500,102 + 20*j);
            connect(button,SIGNAL(clicked()),this,SLOT(lock()));
            scene->addItem(button);
         }
@@ -281,9 +278,9 @@ void BattleshipGame::endGame(){
         basicTurnText->setText(QString("Sorry to inform you, you lost"));
     }
 
-    int bx=200;
-    int by=250;
-    returnToLobby->setGeometry(bx,by,70,35);
+    int bx=this->width()/2-50;
+    int by=4*this->height()/6;
+    returnToLobby->setGeometry(bx,by,100,50);
     returnToLobby->show();
     returnToLobby->setEnabled(true);
 
@@ -307,7 +304,7 @@ void BattleshipGame::refresh(){
     games.clear();
     games = interface.getOpenGames();
 
-    QGraphicsRectItem* panel = new QGraphicsRectItem(100,100,500,300);
+    QGraphicsRectItem* panel = new QGraphicsRectItem(150,100,400,600);
     QBrush brush;
     brush.setStyle(Qt::SolidPattern);
     brush.setColor(Qt::white);
@@ -320,9 +317,9 @@ void BattleshipGame::refresh(){
 
     for(auto i = games.begin(); i != games.end() ;j++, i++){
        label = scene->addText(QString::fromStdString(*i));
-       label->setPos(102,102+20*j);
+       label->setPos(152,102+20*j);
        button = new Button(QString("Join"),50,20,j);
-       button->setPos(400,102 + 20*j);
+       button->setPos(500,102 + 20*j);
        connect(button,SIGNAL(clicked()),this,SLOT(lock()));
        scene->addItem(button);
     }
