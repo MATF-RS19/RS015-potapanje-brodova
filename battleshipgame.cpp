@@ -245,9 +245,9 @@ void BattleshipGame::lock(){
         refreshButton->hide();
         player1->cellboard->placeBoard(player1->getBoardX(),player1->getBoardY(),BOARD_SIZE,BOARD_SIZE);
 
-        int bx=100;
-        int by=250;
-        lockButton->setGeometry(bx,by,50,25);
+        int bx=150;
+        int by=280;
+        lockButton->setGeometry(bx+3*38,by,77,40);
 
         lockButton->show();
         lockButton->setEnabled(false);
