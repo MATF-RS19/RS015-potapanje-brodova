@@ -39,7 +39,6 @@ void Player::pollGameState() {
     std::thread([this]() {
         while (gameID != "") {
             try {
-                cout << "Polling game state" << endl;
                 string response = interface.getGameState(
                         name.toStdString(),
                         secret.toStdString(),
@@ -51,24 +50,25 @@ void Player::pollGameState() {
                     for (int j = 0; j < BOARD_SIZE; j++) {
                         string cell;
                         newState >> cell;
-                        if (board[i][j] != stoi(cell))
+                        if (board[i][j] != stoi(cell)) {
                             cellboard->getCells()[j * BOARD_SIZE + i]->setState(stoi(cell));
-                        board[i][j] = stoi(cell);
+                            board[i][j] = stoi(cell);
+                        }
                     }
                 }
                 for (int i = 0; i < BOARD_SIZE; i++) {
                     for (int j = 0; j < BOARD_SIZE; j++) {
                         string cell;
                         newState >> cell;
-                        if (enemyBoard[i][j] != stoi(cell))
+                        if (enemyBoard[i][j] != stoi(cell)) {
                             enemyCellBoard->getCells()[j * BOARD_SIZE + i]->setState(stoi(cell));
-                        enemyBoard[i][j] = stoi(cell);
+                            enemyBoard[i][j] = stoi(cell);
+                        }
                     }
                 }
                 string turn;
                 newState >> turn;
                 game->setWhoseTurn(QString::fromStdString(turn));
-                cout << "turn : " << turn << endl;
                 string state;
                 newState >> state;
 
@@ -79,7 +79,7 @@ void Player::pollGameState() {
                     game->basicTurnText->setText("Your Turn");
                 }
 
-                cout << "Game state: " << state << endl;
+                cout << "Game state: " << state << ", turn: " << turn << endl;
                 if(state == "won"){
                     this->WinnerStatus = "won";
                     this->gameID = "";
@@ -90,7 +90,6 @@ void Player::pollGameState() {
                 }
                 string enemyName;
                 newState >> enemyName;
-                cout << "Enemy name: " << enemyName << endl;
 
                 game->viewport()->update();
             } catch (string const err) {
@@ -132,37 +131,16 @@ void Player::takeTurn(int x, int y,QString player){
     std::cout << "polje" << x << " " << y << "gadja :" << game->getWhoseTurn().toStdString() << std::endl;
 
     try {
-        interface.playTurn(name.toStdString(), secret.toStdString(), gameID, x, y);
+        string newCellState = interface.playTurn(name.toStdString(), secret.toStdString(), gameID, x, y);
+        if (enemyBoard[x][y] != stoi(newCellState)) {
+            enemyCellBoard->getCells()[y * BOARD_SIZE + x]->setState(stoi(newCellState));
+            enemyBoard[x][y] = stoi(newCellState);
+        }
         game->setWhoseTurn(this->getEnemyName());
+        game->basicTurnText->setText("Enemy Turn");
     } catch (string const err) {
         cerr << err << endl;
     }
-
-//    QGraphicsPixmapItem* p = new QGraphicsPixmapItem();
-//
-//    if(this->enemyBoard[x][y]==1){
-//        std::cout << "pogodak" << std::endl;
-//        p->setPixmap(QPixmap(":/images/images/fire.png"));
-//        p->setPos(this->getBoardXE() + y*38,this->getBoardYE() + x*38);
-//        this->enemyBoard[x][y]=3;
-//        numOfEnemySunk++;
-//        if(numOfEnemySunk == 8){
-//            //game over, you win;
-//        }
-//        game->setWhoseTurn(this->getEnemyName());
-//    }
-//    else {
-//            std::cout << "promasaj" << std::endl;
-//            p->setPixmap(QPixmap(":/images/images/splash.png"));
-//            p->setPos(this->getBoardXE() + y*38,this->getBoardYE() + x*38);
-//
-//            this->enemyBoard[x][y]=2;
-//            game->setWhoseTurn(this->getEnemyName());
-//    }
-//
-//    p->show();
-//    game->scene->addItem(p);
-
 }
 
 void Player::setBoardX(int x){
