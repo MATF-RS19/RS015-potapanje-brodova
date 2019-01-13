@@ -1,5 +1,7 @@
 # RS015-potapanje-brodova
 
+![Battleships Online](https://raw.githubusercontent.com/MATF-RS19/RS015-potapanje-brodova/master/Screenshots/03%20game.png)
+
 Klasična igra potapanja brodova u dvoje igrača preko servera.
 
 ## Server
