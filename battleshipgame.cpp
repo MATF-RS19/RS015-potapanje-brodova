@@ -102,7 +102,7 @@ void BattleshipGame::start(){
         player1->setBoardYE(350);
         player1->enemyCellBoard->placeBoard(player1->getBoardXE(), player1->getBoardYE(), BOARD_SIZE, BOARD_SIZE);
 
-        srand(time(NULL));
+        viewport()->update();
     } catch (string const err) {
         cerr << err << endl;
     }
@@ -153,6 +153,8 @@ void BattleshipGame::displayMenu(){
     textName->setFocus();
     scene->addWidget(textName);
     connect(textName,SIGNAL(textChanged(QString)),this,SLOT(editText()));
+
+    viewport()->update();
 }
 
 
@@ -232,8 +234,7 @@ void BattleshipGame::lobby(){
            scene->addItem(button);
         }
 
-
-
+        viewport()->update();
     } catch (string const err) {
         cerr << err << endl;
     }
@@ -255,6 +256,8 @@ void BattleshipGame::lock(){
         lockButton->setEnabled(false);
 
         std::cout << player1->gameID << std::endl;
+
+        viewport()->update();
     } catch (string const err) {
         cerr << err << endl;
     }
@@ -284,6 +287,7 @@ void BattleshipGame::endGame(){
     returnToLobby->show();
     returnToLobby->setEnabled(true);
 
+    viewport()->update();
 }
 
 
@@ -323,4 +327,5 @@ void BattleshipGame::refresh(){
        scene->addItem(button);
     }
 
+    viewport()->update();
 }

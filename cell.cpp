@@ -116,5 +116,6 @@ void Cell::setState(int state) {
         QBrush brush(ship);
         setBrush(brush);
     }
+    game->viewport()->update();
 }
 

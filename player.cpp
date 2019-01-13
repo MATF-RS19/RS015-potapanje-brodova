@@ -91,6 +91,8 @@ void Player::pollGameState() {
                 string enemyName;
                 newState >> enemyName;
                 cout << "Enemy name: " << enemyName << endl;
+
+                game->viewport()->update();
             } catch (string const err) {
                 cerr << "Error: " << err << endl;
             }
