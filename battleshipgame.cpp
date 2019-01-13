@@ -34,7 +34,7 @@ BattleshipGame::BattleshipGame(QWidget *parent)
     connect(playButton,SIGNAL(clicked()),this,SLOT(lobby()));
     playButton->hide();
 
-    refreshButton = new QPushButton("Refresh",this);
+    refreshButton = new QPushButton("REFRESH",this);
     connect(refreshButton,SIGNAL(clicked()),this,SLOT(refresh()));
     refreshButton->hide();
 
@@ -272,7 +272,7 @@ void BattleshipGame::endGame(){
     //congradulations, you win or you lose
     scene->clear();
     if(player1->WinnerStatus == "won"){
-        basicTurnText->setText(QString("Congradulations,you won"));
+        basicTurnText->setText(QString("Congratulations,you won"));
     }
     else{
         basicTurnText->setText(QString("Sorry to inform you, you lost"));
