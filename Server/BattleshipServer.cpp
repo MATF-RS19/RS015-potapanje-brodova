@@ -19,7 +19,7 @@ string BattleshipServer::getOpenGames() {
 
 
     for (auto &game : games) {
-        response += game->getId() + "\n";
+        response += game->getId() + " " + game->getCreator()->getName() + "\n";
     }
     return response;
 }

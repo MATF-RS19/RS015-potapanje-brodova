@@ -115,20 +115,20 @@ string ServerCommunicator::playTurn(string username, string secret, string gameI
     throw requestTask.get();
 }
 
-vector<string> ServerCommunicator::getOpenGames() {
+vector<pair<string, string>> ServerCommunicator::getOpenGames() {
     int statusCode = 200;
-    pplx::task<vector<string>> requestTask = client.request(methods::GET, "/games")
+    pplx::task<vector<pair<string, string>>> requestTask = client.request(methods::GET, "/games")
             .then([&statusCode](http_response response) mutable {
                 statusCode = response.status_code();
                 return response.extract_string();
             })
             .then([=](string body) {
-                vector <string> games;
+                vector<pair<string, string>> games;
                 stringstream stream(body);
-                string gameId;
+                string game;
 
-                while(std::getline(stream, gameId, '\n'))
-                    games.emplace_back(gameId);
+                while(std::getline(stream, game, '\n'))
+                    games.emplace_back(std::make_pair(game.substr(0, 10), game.substr(11)));
 
                 return games;
             });

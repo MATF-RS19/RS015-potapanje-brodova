@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 #include <cpprest/http_client.h>
 
 using namespace std;
@@ -23,7 +24,7 @@ public:
     string getGameState(string username, string secret, string gameId);
     string playTurn(string username, string secret, string gameId, int turn_x, int turn_y);
     void unregister(string username, string secret);
-    vector<string> getOpenGames();
+    vector<pair<string, string>> getOpenGames();
 };
 
 

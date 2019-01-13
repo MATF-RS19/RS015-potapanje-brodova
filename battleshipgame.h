@@ -26,7 +26,7 @@ public:
     BattleshipGame(QWidget* parent=NULL);
 
     Player* player1;
-    std::vector<string> games;
+    std::vector<std::pair<string, string>> games;
 
     QString getWhoseTurn(void);
     void setWhoseTurn(QString);

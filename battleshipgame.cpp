@@ -222,13 +222,15 @@ void BattleshipGame::lobby(){
         Button* button;
         int j=0;
 
-        for(auto i = games.begin(); i != games.end() ;j++, i++){
-           label = scene->addText(QString::fromStdString(*i));
-           label->setPos(152,102+20*j);
-           button = new Button(QString("Join"),50,20,j);
-           button->setPos(500,102 + 20*j);
-           connect(button,SIGNAL(clicked()),this,SLOT(lock()));
-           scene->addItem(button);
+        for(auto game = games.begin(); game != games.end() ;j++, game++) {
+            string gameId = game->first;
+            string creator = game->second;
+            label = scene->addText(QString::fromStdString(creator));
+            label->setPos(152, 102 + 20 * j);
+            button = new Button(QString("Join"), 50, 20, j);
+            button->setPos(500, 102 + 20 * j);
+            connect(button, SIGNAL(clicked()), this, SLOT(lock()));
+            scene->addItem(button);
         }
 
         viewport()->update();
@@ -312,13 +314,15 @@ void BattleshipGame::refresh(){
     Button* button;
     int j=0;
 
-    for(auto i = games.begin(); i != games.end() ;j++, i++){
-       label = scene->addText(QString::fromStdString(*i));
-       label->setPos(152,102+20*j);
-       button = new Button(QString("Join"),50,20,j);
-       button->setPos(500,102 + 20*j);
-       connect(button,SIGNAL(clicked()),this,SLOT(lock()));
-       scene->addItem(button);
+    for(auto game = games.begin(); game != games.end() ;j++, game++) {
+        string gameId = game->first;
+        string creator = game->second;
+        label = scene->addText(QString::fromStdString(creator));
+        label->setPos(152, 102 + 20 * j);
+        button = new Button(QString("Join"), 50, 20, j);
+        button->setPos(500, 102 + 20 * j);
+        connect(button, SIGNAL(clicked()), this, SLOT(lock()));
+        scene->addItem(button);
     }
 
     viewport()->update();
