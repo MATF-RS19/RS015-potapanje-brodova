@@ -35,7 +35,7 @@ BattleshipGame::BattleshipGame(QWidget *parent)
     playButton->hide();
 
     refreshButton = new QPushButton("REFRESH",this);
-    connect(refreshButton,SIGNAL(clicked()),this,SLOT(refresh()));
+    connect(refreshButton,SIGNAL(clicked()),this,SLOT(loadGames()));
     refreshButton->hide();
 
     createButton = new QPushButton("CREATE",this);
@@ -50,11 +50,7 @@ BattleshipGame::BattleshipGame(QWidget *parent)
     connect(returnToLobby,SIGNAL(clicked()),this,SLOT(lobby()));
     returnToLobby->hide();
 
-
-
     textName = new QLineEdit;
-
-
 
     setScene(scene);
 }
@@ -208,32 +204,7 @@ void BattleshipGame::lobby(){
         int ry=125;
         refreshButton->setGeometry(rx,ry,100,50);
         refreshButton->show();
-        games.clear();
-        games = interface.getOpenGames();
-
-        QGraphicsRectItem* panel = new QGraphicsRectItem(150,100,400,600);
-        QBrush brush;
-        brush.setStyle(Qt::SolidPattern);
-        brush.setColor(Qt::white);
-        panel->setBrush(brush);
-        panel->setOpacity(1);
-        scene->addItem(panel);
-        QGraphicsTextItem* label;
-        Button* button;
-        int j=0;
-
-        for(auto game = games.begin(); game != games.end() ;j++, game++) {
-            string gameId = game->first;
-            string creator = game->second;
-            label = scene->addText(QString::fromStdString(creator));
-            label->setPos(152, 102 + 20 * j);
-            button = new Button(QString("Join"), 50, 20, j);
-            button->setPos(500, 102 + 20 * j);
-            connect(button, SIGNAL(clicked()), this, SLOT(lock()));
-            scene->addItem(button);
-        }
-
-        viewport()->update();
+        loadGames();
     } catch (string const err) {
         cerr << err << endl;
     }
@@ -298,7 +269,7 @@ void BattleshipGame::createPlayer(QString name,string secret){
 }
 
 
-void BattleshipGame::refresh(){
+void BattleshipGame::loadGames(){
     scene->clear();
     games.clear();
     games = interface.getOpenGames();
@@ -317,10 +288,10 @@ void BattleshipGame::refresh(){
     for(auto game = games.begin(); game != games.end() ;j++, game++) {
         string gameId = game->first;
         string creator = game->second;
-        label = scene->addText(QString::fromStdString(creator));
-        label->setPos(152, 102 + 20 * j);
+        label = scene->addText(QString::fromStdString(creator + "'s game"));
+        label->setPos(152, 102 + 25 * j);
         button = new Button(QString("Join"), 50, 20, j);
-        button->setPos(500, 102 + 20 * j);
+        button->setPos(495, 105 + 25 * j);
         connect(button, SIGNAL(clicked()), this, SLOT(lock()));
         scene->addItem(button);
     }

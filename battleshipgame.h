@@ -55,7 +55,7 @@ public slots:
     void editText();
     void lock();
     void lobby();
-    void refresh();
+    void loadGames();
 };
 
 #endif // BATTLESHIPGAME_H
