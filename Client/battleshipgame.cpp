@@ -28,6 +28,8 @@ BattleshipGame::BattleshipGame(QWidget *parent)
     QBrush brush(bg);
     scene->setBackgroundBrush(brush);
 
+    //inicijalizacija svih widget-a koji ce biti korisceni vise puta
+
     basicTurnText = new QLabel("Finding an opponent", this);
     basicTurnText->hide();
 
@@ -77,6 +79,9 @@ BattleshipGame::BattleshipGame(QWidget *parent)
 }
 
 void BattleshipGame::start(){
+
+    //pocetak igre
+
     setFinishedPlacing(true);
     lockButton->hide();
     std::cout << "player1 name = " << player1->getName().toStdString() << std::endl;
@@ -94,6 +99,9 @@ void BattleshipGame::start(){
             for (int j = 0; j < BOARD_SIZE; j++)
                 if (player1->board[i][j])
                     ships += to_string(i) + "," + to_string(j) + ",";
+
+        //provera da li je igrac kreirao igru ili se pridruzuje vec postojecoj igri
+
         if (player1->gameID == "") {
             string gameId = interface.createGame(
                     player1->getName().toStdString(),
@@ -149,6 +157,9 @@ bool BattleshipGame::getFinishedPlacing(){
 }
 
 void BattleshipGame::displayMenu(){
+
+    //pocetni ekran po pokretanju aplikacije
+
     QGraphicsTextItem* title = new QGraphicsTextItem(QString("Battleships Online"));
     int tx = width()/4;
     int ty = 50;
@@ -165,6 +176,8 @@ void BattleshipGame::displayMenu(){
     playButton->show();
     playButton->setEnabled(false);
 
+    //potrebno upisivanje imena radi registracije na serveru
+
     textName->setPlaceholderText("Enter your name");
     textName->setFocus();
     textName->setAlignment(Qt::AlignCenter);
@@ -178,7 +191,11 @@ void BattleshipGame::displayMenu(){
 
 
 void BattleshipGame::lobby(){
+
     try {
+
+        //provera da li je igrac vec inicijalizovan i inicijalizacija (ili resetovanje) svih ostalih potrebnih objekata i promenljivih
+
         if(!isPlayerCreated){
             QString name = textName->text();
             string _name = name.toStdString();
@@ -226,6 +243,7 @@ void BattleshipGame::lobby(){
         createButton->show();
         createButton->setEnabled(true);
 
+
         int rx=700;
         int ry=125;
         refreshButton->setGeometry(rx,ry,100,50);
@@ -240,6 +258,9 @@ void BattleshipGame::lobby(){
 
 void BattleshipGame::lock(){
     try {
+
+        //iscrtava se tabla i postavljaju se brodici
+
         scene->clear();
         createButton->hide();
         refreshButton->hide();
@@ -299,6 +320,9 @@ void BattleshipGame::createPlayer(QString name,string secret){
 
 
 void BattleshipGame::loadGames(){
+
+    //ispis trenutno slobodnih igara na serveru
+
     scene->clear();
     games.clear();
     games = interface.getOpenGames();

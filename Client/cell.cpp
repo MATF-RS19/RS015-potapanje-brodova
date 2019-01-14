@@ -36,6 +36,8 @@ int Cell::getY(){
 
 void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
 
+    //levi klik
+
     if(event->button()==Qt::LeftButton){
         if(game->getFinishedPlacing()){
             if(game->getWhoseTurn()== game->player1->getName())
@@ -57,6 +59,8 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
             }
             else
             {
+                //postavljanje brodova na tabli
+
                 if(game->player1->board[this->getX()][this->getY()] == 1){
                     return;
                 }
@@ -72,6 +76,9 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
             }
         }
     }
+
+    //desni klik
+
     if(event->button()==Qt::RightButton)
     {
         if(game->getFinishedPlacing()){
@@ -79,6 +86,8 @@ void Cell::mousePressEvent(QGraphicsSceneMouseEvent* event){
         }
         else
         {
+            //uklanjanje broda sa table
+
             if(game->player1->board[this->getX()][this->getY()] == 1){
                 game->player1->board[this->getX()][this->getY()] = 0;
                 game->player1->shipsPlaced--;

@@ -4,11 +4,6 @@
 #include <QList>
 #include "cell.h"
 
-/*pretrazeno mnogo sajtova i kodova za ideju
- *nekoliko repozitorijuma na githabu su sluzili kao inspiracija
- * btw nije debagovano,moguce greske
-*/
-
 
 class cellBoard
 {

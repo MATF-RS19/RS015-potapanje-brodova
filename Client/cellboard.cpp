@@ -3,8 +3,6 @@
 #include "battleshipgame.h"
 #include "../config.h"
 
-/*posto sam definisao kvadrat da bude duzine 20, mora da bude veci razmak od toga posto se racuna
-gornjeg levog coska kvadrata */
 
 #define SPACE 38
 
@@ -22,6 +20,7 @@ QList<Cell*> cellBoard::getCells(){
 }
 
 void cellBoard::placeBoard(int x,int y,int cols,int rows){
+    //iscrtavanje tabele
     for(int i=0,n=cols;i<n;i++){
         createColumn(SPACE*i + x,y,rows,i);
     }
